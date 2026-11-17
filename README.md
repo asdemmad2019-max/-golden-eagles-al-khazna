@@ -1,9 +1,23 @@
-# GOLDEN EAGLES - AL-KHAZNA
+# GOLDEN EAGLES - SUPABASE CONNECTED ✅
+Project URL: https://narqpwtdzvmaznvnbyxz.supabase.co
+Org: GOLDEN EAGLES ALKHZANA
+Project: golden-eagles-platform
 
-Live: https://asdemmad2019-max.github.io/golden-eagles-al-khazna/
+## ما سويت
+- supabase-config.js جاهز بالرابط والمفتاح Publishable - لا تعدل عليه
+- supabase-sync.js يربط الموقع ويختبر جدول plans
 
-Files:
-- index.html
-- eagle.webp - eagle logo
-- vault.webp - vault image
-- favicon.ico / favicon.png - browser tab icon
+## باقي خطوة واحدة - الجداول
+1. افتح مشروعك في Supabase
+2. SQL Editor -> New query
+3. الصق كل ملف supabase.sql -> Run
+4. افتح موقعك - لازم تشوف: ☁️ Supabase مربوط ✅
+5. اذا شفت: ⚠️ الجداول بعدها ما منشأة - معناها ما شغلت SQL بعد
+
+## ارفع
+ارفع كل الملفات: index.html + supabase-config.js + supabase-sync.js + eagle.webp + vault.webp + manifest.json
+
+## تنبيه أمان
+- هذا المفتاح Publishable - عادي ينحط بالموقع، هو مخصص للواجهة.
+- لا تحط service_role أبداً في الموقع.
+- الرصيد والموافقات حالياً ما زالت تعتمد على localStorage للتجربة. للفلوس الحقيقية لازم Auth + RLS + Edge Functions.
