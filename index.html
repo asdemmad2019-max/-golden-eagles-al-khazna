@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Golden Eagles - Al-Khazna | النسور الذهبية</title>
+<meta name="description" content="Golden Eagles Al-Khazna - منصة النسور الذهبية. ثقتك قوتنا.">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#000000"><link rel="icon" href="eagle.webp">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{background:#000;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.7;overflow-x:hidden}
+header{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);border-bottom:1px solid #FFD700;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 20px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px}.logo img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #FFD700}.logo b{font-size:19px;background:linear-gradient(#FFF7CC,#FFD700,#B8860B);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.logo small{display:block;color:#FFD700;font-size:12px}
+nav{display:flex;gap:8px;overflow-x:auto}nav button{background:#111;border:1px solid #333;color:#fff;padding:9px 16px;border-radius:999px;cursor:pointer;white-space:nowrap;font-size:14px}
+.btn-gold{background:linear-gradient(#FFE27A,#FFD700,#B8860B);color:#000;border:none;padding:12px 24px;border-radius:999px;font-weight:800;cursor:pointer;font-size:15px}.btn-ghost{background:#111;border:1px solid #FFD700;color:#FFD700;padding:12px 20px;border-radius:999px;cursor:pointer;font-size:15px}
+.wrap{max-width:1150px;margin:auto;padding:0 18px 40px}.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;padding:42px 0 28px}@media(max-width:820px){.hero{grid-template-columns:1fr;text-align:center}}.hero img{width:100%;max-width:480px;border-radius:24px;border:1px solid #FFD700;display:block;margin:auto}
+.h1{font-size:52px;line-height:1.15;background:linear-gradient(#FFF7CC,#FFD700,#B8860B);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.h2{font-size:34px;background:linear-gradient(#FFF7CC,#FFD700,#B8860B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:6px 0}
+.ribbon{display:inline-block;background:linear-gradient(#FFE27A,#FFD700);color:#000;padding:8px 16px;border-radius:999px;font-weight:800;margin:14px 0;font-size:14px}.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}.stat{background:#0d0d0d;border:1px solid #2a2a2a;border-radius:16px;padding:16px;flex:1;min-width:150px}.stat span{color:#aaa;font-size:13px}.stat b{font-size:22px;color:#FFD700;direction:ltr;display:block;margin-top:4px}
+.card{background:#0d0d0d;border:1px solid #2a2a2a;border-radius:22px;padding:24px}.section{margin-top:48px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}@media(max-width:820px){.grid2{grid-template-columns:1fr}}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}@media(max-width:820px){.grid3{grid-template-columns:1fr}}
+.vault-img{width:100%;border-radius:18px;border:1px solid #FFD700;display:block}.balance{font-size:34px;color:#FFD700;direction:ltr;text-align:center;margin:14px 0}.btns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btns button{padding:15px;border-radius:14px;border:1px solid #FFD700;background:#1a1a1a;color:#fff;cursor:pointer;font-weight:700;font-size:15px}
+input,select,textarea{width:100%;background:#000;border:1px solid #444;color:#fff;padding:13px;border-radius:12px;margin:8px 0;font-size:15px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.modal-box{background:#111;border:1px solid #FFD700;border-radius:20px;padding:24px;width:100%;max-width:460px;max-height:92vh;overflow:auto}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:linear-gradient(#FFE27A,#FFD700);color:#000;padding:13px 22px;border-radius:999px;font-weight:800;z-index:200;display:none;max-width:90vw;text-align:center}
+.row{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #222}footer{text-align:center;padding:32px 16px;color:#888;border-top:1px solid #222;margin-top:48px}
+/* ADMIN HIDDEN - invisible dot 50x50, easy to tap */
+#adminDot{position:fixed;bottom:0;left:0;width:50px;height:50px;background:transparent;opacity:0;border:none;z-index:9999;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.badge{background:#FFD700;color:#000;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:800}.faq{cursor:pointer}.plan-price{font-size:30px;color:#FFD700;direction:ltr;margin:10px 0}
+.ann-bar{background:linear-gradient(90deg,#FFE27A,#FFD700,#B8860B);color:#000;text-align:center;padding:9px 42px 9px 14px;font-weight:800;font-size:14px;position:relative}.ann-close{position:absolute;left:10px;top:50%;transform:translateY(-50%);background:#000;color:#FFD700;border:none;width:26px;height:26px;border-radius:50%;cursor:pointer}
+.ticker{background:#111;border-bottom:1px solid #FFD700;overflow:hidden;white-space:nowrap;padding:8px 0;font-size:13px}.ticker span{display:inline-block;animation:tick 30s linear infinite}@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.wa-btn{position:fixed;bottom:16px;right:16px;width:58px;height:58px;background:#25D366;border-radius:50%;z-index:998;display:flex;align-items:center;justify-content:center;font-size:30px;text-decoration:none}
+.count-box{background:#1a1200;border:1px solid #FFD700;border-radius:16px;padding:14px;text-align:center;margin:16px 0}.count-box b{font-size:28px;color:#FFD700;direction:ltr}.stars{color:#FFD700}.lang-btn{background:#111;border:1px solid #FFD700;color:#FFD700;padding:9px 12px;border-radius:999px;cursor:pointer}
+.trust{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}@media(max-width:820px){.trust{grid-template-columns:1fr 1fr}}.trust div{background:#0d0d0d;border:1px solid #FFD700;border-radius:16px;padding:14px;text-align:center}.trust b{color:#FFD700;font-size:20px;display:block}
+.step-num{width:48px;height:48px;background:linear-gradient(#FFE27A,#FFD700);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;margin:auto}
+.pay-card{border:1px solid #333;border-radius:16px;padding:14px;text-align:center}.pay-card.off{opacity:.45}.pay-card.off b:after{content:" - متوقف"}
+.wheel{width:140px;height:140px;border-radius:50%;background:conic-gradient(#FFD700 0 60deg,#111 60deg 120deg,#FFD700 120deg 180deg,#111 180deg 240deg,#FFD700 240deg 300deg,#111 300deg 360deg);border:3px solid #FFD700;display:flex;align-items:center;justify-content:center;margin:14px auto;font-size:32px} .wheel.spin{animation:spinWheel 1.2s ease-out} @keyframes spinWheel{0%{transform:rotate(0)}100%{transform:rotate(720deg)}} .progress{height:12px;background:#222;border-radius:999px;overflow:hidden} .progress i{display:block;height:100%;background:linear-gradient(90deg,#FFE27A,#FFD700)}</style>
+</head>
+<body>
+<div id="annBar" class="ann-bar"><span id="annBarText">📢 عرض خاص 🔥: أرباح مضاعفة على خطة Gold هذا الأسبوع فقط!</span> <button class="ann-close" onclick="document.getElementById('annBar').style.display='none'">✕</button></div>
+<div class="ticker"><span>أحمد سحب $500 ✅ • علي سحب $1200 ✅ • مصطفى سحب $300 ✅ • حسن سحب $800 ✅ • عمر سحب $1500 ✅ • أحمد سحب $500 ✅</span></div>
+<header><div class="logo"><img src="eagle.webp"><div><b>GOLDEN EAGLES</b><small>(AL-KHAZNA) - الخزنة</small></div></div><nav><button onclick="go('home')">الرئيسية</button><button onclick="go('vault')">الخزنة</button><button onclick="go('plans')">الخطط</button><button onclick="go('payment')">طرق الدفع</button><button onclick="go('track')">تتبع الطلب</button><button onclick="go('support')">الدعم</button><button onclick="go('proofs')">إثباتات</button><button onclick="go('livechat')">شات</button><button onclick="go('account')">حسابي</button></nav><div style="display:flex;gap:10px;align-items:center"><button class="lang-btn" onclick="toggleLang()" id="langBtn">EN</button><button onclick="openModal('notifModal')" style="background:#111;border:1px solid #333;color:#fff;padding:9px 14px;border-radius:999px;cursor:pointer">🔔 <span id="bellBadge" class="badge">3</span></button><span id="userLabel">ضيف</span><button class="btn-gold" onclick="openModal('loginModal')">دخول</button></div></header>
+<div class="wrap">
+<div class="count-box">⏳ العرض يخلص بعد: <b id="countDown">48:00:00</b> | كود الخصم: <b>EAGLE50</b> خصم 50% <button class="btn-gold" style="padding:6px 14px;font-size:13px" onclick="applyCouponPrompt()">استخدم الكود</button></div>
+<section id="home" class="hero"><div><div class="h1">GOLDEN EAGLES</div><div class="h2">(AL-KHAZNA)</div><div class="ribbon">YOUR TRUST .. OUR STRENGTH - ثقتك .. قوتنا</div><div id="sbStatus" style="font-size:12px;color:#FFD700;margin-top:6px">☁️ Supabase مربوط: narqpwtdzvmaznvnbyxz.supabase.co - مشروع GOLDEN EAGLES ALKHZANA</div><p style="color:#ddd">منصة النسور الذهبية (الخزنة) - خطط واضحة، سحب سريع، دعم حقيقي.</p><div class="hero-btns"><button class="btn-gold" onclick="go('vault')">ابدأ الآن ←</button><button class="btn-ghost" onclick="go('plans')">استكشف الخطط</button></div><div class="stats"><div class="stat"><span>الرصيد</span><b id="statBalance">$ 0.00</b></div><div class="stat"><span>النمو</span><b>▲ +12.5%</b></div><div class="stat"><span>الأعضاء</span><b id="memberCount">2,340</b></div></div></div><img src="eagle.webp"></section>
+
+<!-- TRUST BAR - NEW 3 -->
+<div class="trust"><div>✅<b id="trustMembers">+2,340</b><span>عضو موثوق</span></div><div>💸<b>+$180,000</b><span>تم سحبها</span></div><div>⭐<b>4.9 / 5</b><span>تقييم الزبائن</span></div><div>⚡<b>خلال ساعة</b><span>متوسط السحب</span></div></div>
+
+<!-- HOW TO START - NEW 4 -->
+<section id="how" class="card section"><h2 class="h2">🚀 كيف تبدأ بـ 3 خطوات؟</h2><div class="grid3" style="margin-top:14px;text-align:center"><div class="card"><div class="step-num">1</div><h3>سجل دخول</h3><p style="color:#aaa">سجل بإيميلك وكلمة مرور، وافتح الخزنة.</p></div><div class="card"><div class="step-num">2</div><h3>اختر خطة</h3><p style="color:#aaa">اختر Bronze أو Silver أو Gold وادفع بطريقتك.</p></div><div class="card"><div class="step-num">3</div><h3>اسحب أرباحك</h3><p style="color:#aaa">تابع أرباحك اليومية واسحبها متى تريد.</p></div></div><button class="btn-gold" style="width:100%;margin-top:14px" onclick="go('plans')">ابدأ الآن ←</button></section>
+
+<section id="vault" class="card section"><h2 class="h2">لوحة التحكم والخزنة</h2><div class="grid2" style="margin-top:20px"><div class="card"><img id="vaultImg" class="vault-img" src="vault.webp"><p id="vaultStatus" style="text-align:center;margin-top:10px">الخزنة مغلقة</p><button class="btn-gold" style="width:100%;margin-top:8px" onclick="openVault()">🔓 افتح الخزنة</button></div><div class="card"><div style="display:flex;justify-content:space-between"><b>رصيدك</b><button onclick="toggleEye()" style="background:none;border:none;cursor:pointer;font-size:18px">👁️</button></div><div class="balance" id="balanceText">$ 0.00</div><div class="btns"><button onclick="openModal('depositModal')">➕ إيداع</button><button onclick="openModal('withdrawModal')">➖ سحب</button><button onclick="openModal('transferModal')">🔄 تحويل</button><button onclick="go('plans')">💰 خطط</button></div><h3 style="margin-top:16px">آخر العمليات</h3><div id="txList"></div></div></div></section>
+
+<section id="plans" class="section"><h2 class="h2">💰 الخطط الاستثمارية</h2><p style="color:#aaa">الأسعار تتغير مباشرة من الأدمن.</p><div id="plansGrid" class="grid3" style="margin-top:18px"></div><div class="card" style="margin-top:18px"><h3>🧮 حاسبة الأرباح</h3><input id="calcAmount" type="number" value="1000"><select id="calcPlan"></select><p>الربح اليومي: <b id="dailyProfit" style="color:#FFD700">$ 0.00</b></p><p>الربح الشهري: <b id="monthlyProfit" style="color:#FFD700">$ 0.00</b></p><button class="btn-gold" onclick="calc()">احسب</button></div></section>
+
+<!-- PAYMENT METHODS - NEW 1 - ADMIN MANAGED -->
+<section id="payment" class="card section"><h2 class="h2">💳 طرق الدفع والسحب</h2><p style="color:#aaa">اختر الطريقة اللي تناسبك. الطرق المتوقفة ما تظهر للزبون إلا للأدمن. <b style="color:#FFD700">الأدمن يكدر يضيف / يمسح / يوقف أي طريقة.</b></p><div id="payGrid" class="grid3" style="margin-top:14px"></div><p style="font-size:12px;color:#888;margin-top:10px">ملاحظة: بعد ما تختار الخطة، اختر طريقة الدفع، ثم أرسل المبلغ وراسلنا على واتساب للتأكيد.</p></section>
+
+<!-- ORDER TRACKING - NEW 2 -->
+<section id="track" class="card section"><h2 class="h2">📦 تتبع طلبك</h2><p style="color:#aaa">اكتب رقم طلبك مثل <b>GE-1234</b> وشوف وين وصل.</p><input id="trackInput" placeholder="رقم الطلب - مثال GE-1234"><button class="btn-gold" style="width:100%" onclick="trackOrder()">تتبع الطلب 🔍</button><div id="trackResult" style="margin-top:12px"></div><h3 style="margin-top:14px">آخر طلباتك</h3><div id="myOrders"></div></section>
+
+
+<section id="account" class="card section"><h2 class="h2">👤 حسابي</h2><div id="accountBox"></div></section>
+
+<section id="dailybonus" class="card section"><h2 class="h2">🎡 عجلة الحظ اليومية - $10</h2><p style="color:#aaa;text-align:center">ادخل كل يوم، دوّر العجلة، ويطلع لك رقم من 1 إلى 10 دولار - كل يوم رقم جديد من العشرة</p><div class="wheel" id="wheelEl" style="font-size:28px;font-weight:800">🎁</div><div id="wheelNumbers" style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin:8px 0"></div><p style="text-align:center;font-size:12px;color:#aaa">العجلة بيها أرقام من 1 إلى 10 دولار - كل يوم يطلع لك رقم واحد من العشرة</p><p style="text-align:center">إجمالي أرباحك من العجلة: <b id="wheelTotal" style="color:#FFD700">$ 0</b></p><button class="btn-gold" style="width:100%" id="bonusBtn" onclick="claimBonus()">دوّر العجلة 🎡</button><p id="bonusMsg" style="text-align:center;margin-top:8px;color:#FFD700"></p><h4 style="margin-top:12px">📜 آخر أرقامك</h4><div id="wheelHist"></div></section>
+<section id="features" class="card section"><h2 class="h2">✨ المميزات</h2><div class="grid3" style="margin-top:14px"><div class="card">🔒 <b>أمان عالي</b><p style="color:#aaa">تشفير وحماية.</p></div><div class="card">⚡ <b>سحب سريع</b><p style="color:#aaa">خلال ساعة إلى 24 ساعة.</p></div><div class="card">💬 <b>دعم 24/7</b><p style="color:#aaa">واتساب + دعم.</p></div></div></section>
+<section id="history" class="card section"><h2 class="h2">📜 سجل العمليات</h2><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn-ghost" onclick="filterTx('all')">الكل</button><button class="btn-ghost" onclick="filterTx('deposit')">إيداع</button><button class="btn-ghost" onclick="filterTx('withdraw')">سحب</button><button class="btn-ghost" onclick="filterTx('transfer')">تحويل</button></div><div id="historyList" style="margin-top:12px"></div></section>
+<section id="referral" class="card section"><h2 class="h2">🔗 دعوة صديق</h2><input id="refLink" readonly><div style="display:flex;gap:8px;margin-top:8px"><button class="btn-gold" onclick="copyRef()">📋 نسخ</button><button class="btn-ghost" onclick="shareRef()">📤 واتساب</button></div><p style="margin-top:10px">أصدقاء: <b id="refCount" style="color:#FFD700">0</b> | عمولة: <b id="refEarn" style="color:#FFD700">$ 0.00</b></p></section>
+
+<section id="proofs" class="card section"><h2 class="h2">🧾 جدار إثباتات السحب - حقيقي</h2><p style="color:#aaa">الزبائن نفسهم يرفعون إثبات سحبهم بعد ما يستلمون، والأدمن يوافق عليه ويظهر هنا للكل. هاي أقوى من أي إعلان.</p><div id="proofList" style="margin-top:12px"></div><div class="card" style="margin-top:12px"><h3>📤 ارفع إثبات سحبك</h3><input id="proofName" placeholder="اسمك"><input id="proofAmount" type="number" placeholder="المبلغ اللي استلمته - مثال 500"><input id="proofImg" type="file" accept="image/*"><img id="proofPreview" style="max-width:100%;border-radius:12px;border:1px solid #FFD700;margin-top:8px;display:none"><button class="btn-gold" style="width:100%;margin-top:8px" onclick="submitProof()">إرسال الإثبات للأدمن ✅</button><p style="font-size:12px;color:#888">الإثبات يظهر بعد موافقة الأدمن.</p></div></section>
+<section id="reviews" class="card section"><h2 class="h2">⭐ آراء الزبائن</h2><div id="reviewsList"></div><h3 style="margin-top:14px">قيّم المنصة</h3><select id="revStars"><option value="5">⭐⭐⭐⭐⭐ 5</option><option value="4">⭐⭐⭐⭐ 4</option><option value="3">⭐⭐⭐ 3</option></select><input id="revName" placeholder="اسمك"><textarea id="revText" placeholder="اكتب رأيك..."></textarea><button class="btn-gold" style="width:100%" onclick="addReview()">إرسال التقييم</button></section>
+<section id="faq" class="card section"><h2 class="h2">❓ الأسئلة الشائعة</h2><div id="faqList"></div></section>
+<section id="support" class="card section"><h2 class="h2">💬 الدعم</h2><div id="supportChat" style="background:#000;border:1px solid #333;border-radius:14px;padding:12px;min-height:120px"><div style="background:#2a2200;padding:10px;border-radius:12px"><b>الدعم:</b> أهلاً بك 👑</div></div><input id="supportName" placeholder="اسمك"><textarea id="supportMsg" placeholder="اكتب رسالتك..."></textarea><button class="btn-gold" style="width:100%" onclick="sendSupport()">إرسال</button></section>
+
+<section id="livechat" class="card section"><h2 class="h2">💬 شات مباشر</h2><p style="color:#aaa">اكتب رسالتك، والأدمن يرد عليك بنفس الصفحة. <span id="chatStatus" style="color:#25D366">● متاح الآن</span></p><div id="liveChatBox" style="background:#000;border:1px solid #333;border-radius:14px;padding:12px;min-height:140px;max-height:300px;overflow:auto;margin:10px 0"></div><div style="display:flex;gap:8px"><input id="liveChatInput" placeholder="اكتب رسالتك..." style="flex:1;margin:0"><button class="btn-gold" onclick="sendLiveChat()" style="padding:12px 20px">إرسال</button></div></section>
+<section id="about" class="card section"><h2 class="h2">🦅 من نحن؟</h2><p style="color:#ddd">النسور الذهبية (الخزنة) - كركوك، العراق. ثقتك .. قوتنا.</p></section>
+</div>
+<footer><b>GOLDEN EAGLES - AL-KHAZNA</b><br>© 2026 النسور الذهبية - جميع الحقوق محفوظة<br><a href="#" onclick="openModal('termsModal');return false" style="color:#FFD700">الشروط</a> • <a href="#" onclick="openModal('privacyModal');return false" style="color:#FFD700">الخصوصية</a></footer>
+
+<div id="loginModal" class="modal"><div class="modal-box"><h3>دخول</h3><input id="loginEmail" placeholder="الإيميل أو رقم الهاتف"><p style="font-size:12px;color:#aaa">جديد؟ <a href="#" onclick="closeModal('loginModal');openModal('registerModal');return false" style="color:#FFD700">أنشئ حساب جديد</a></p><input id="loginPass" type="password" placeholder="كلمة المرور"><button class="btn-gold" style="width:100%" onclick="doLogin()">دخول</button><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="closeModal('loginModal')">إغلاق</button></div></div>
+<div id="depositModal" class="modal"><div class="modal-box"><h3>إيداع</h3><label>طريقة الدفع</label><select id="depMethod"></select><input id="depAmount" type="number" placeholder="المبلغ"><p id="depMethodInfo" style="font-size:12px;color:#FFD700"></p><button class="btn-gold" style="width:100%" onclick="doDeposit()">تأكيد الإيداع</button><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="closeModal('depositModal')">إغلاق</button></div></div>
+<div id="withdrawModal" class="modal"><div class="modal-box"><h3>سحب</h3><label>طريقة السحب - فقط المتوفرة تظهر</label><select id="wdMethod"></select><input id="wdAccount" placeholder="رقم المحفظة / الحساب - مثال 0770xxxxxxx"><input id="wdAmount" type="number" placeholder="المبلغ"><p id="wdError" style="display:none;color:#f55;font-size:13px">المبلغ أكبر من رصيدك</p><p id="wdMethodInfo" style="font-size:12px;color:#FFD700"></p><button class="btn-gold" style="width:100%" onclick="doWithdraw()">تأكيد السحب</button><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="closeModal('withdrawModal')">إغلاق</button></div></div>
+<div id="transferModal" class="modal"><div class="modal-box"><h3>تحويل</h3><input id="trTo" placeholder="المستلم"><input id="trAmount" type="number" placeholder="المبلغ"><button class="btn-gold" style="width:100%" onclick="doTransfer()">تأكيد</button><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="closeModal('transferModal')">إغلاق</button></div></div>
+<div id="notifModal" class="modal"><div class="modal-box"><h3>الإشعارات</h3><div id="notifList"></div><p style="font-size:12px;color:#aaa">إشعارات حقيقية - من تقبل طلبك أو تربح من العجلة، يوصلك إشعار هنا.</p><button class="btn-gold" style="width:100%" onclick="markRead()">تحديد الكل كمقروء</button><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="closeModal('notifModal')">إغلاق</button></div></div>
+<div id="termsModal" class="modal"><div class="modal-box"><h3>الشروط</h3><p style="font-size:14px;color:#ddd">1. عمرك 18+.<br>2. الأسعار قابلة للتغيير من الأدمن.<br>3. السحب خلال 1-24 ساعة.<br>4. الاحتيال = حظر.</p><button class="btn-ghost" style="width:100%" onclick="closeModal('termsModal')">إغلاق</button></div></div>
+<div id="privacyModal" class="modal"><div class="modal-box"><h3>الخصوصية</h3><p style="font-size:14px;color:#ddd">بياناتك تنحفظ في متصفحك فقط في النسخة التجريبية.</p><button class="btn-ghost" style="width:100%" onclick="closeModal('privacyModal')">إغلاق</button></div></div>
+<div id="annPopup" class="modal"><div class="modal-box" style="text-align:center"><div style="font-size:48px">📢</div><h3 id="annPopupTitle">إعلان مهم</h3><p id="annPopupText" style="color:#ddd;margin:10px 0"></p><button class="btn-gold" style="width:100%" onclick="closeModal('annPopup');go('plans')">شاهد العرض ←</button><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="closeModal('annPopup')">إغلاق</button></div></div>
+
+<div id="registerModal" class="modal"><div class="modal-box"><h3>📝 إنشاء حساب جديد - حقيقي</h3><input id="regName" placeholder="الاسم الكامل"><input id="regPhone" placeholder="رقم الهاتف - مثال 0770xxxxxxx"><input id="regEmail" placeholder="الإيميل"><input id="regPass" type="password" placeholder="كلمة المرور - 4 أحرف على الأقل"><input id="regPin" placeholder="رمز السحب PIN - 4 أرقام - مثال 1234"><button class="btn-gold" style="width:100%" onclick="doRegister()">إنشاء الحساب</button><p style="font-size:12px;color:#aaa;text-align:center;margin-top:8px">عندك حساب؟ <a href="#" onclick="closeModal('registerModal');openModal('loginModal');return false" style="color:#FFD700">سجل دخول</a></p><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="closeModal('registerModal')">إغلاق</button></div></div>
+<div id="pinModal" class="modal"><div class="modal-box"><h3>🔐 تأكيد رمز السحب PIN</h3><p style="color:#aaa;font-size:13px">اكتب رمز السحب اللي سويته بالتسجيل.</p><input id="pinInput" placeholder="PIN - 4 أرقام"><button class="btn-gold" style="width:100%" onclick="confirmPinAndWithdraw()">تأكيد والسحب</button><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="closeModal('pinModal')">إلغاء</button></div></div>
+<div id="adminLoginModal" class="modal"><div class="modal-box"><h3>👑 الأدمن - دخول</h3><p style="font-size:13px;color:#aaa">أول مرة: أنشئ كلمة مرور. أو اكتب <b>admin</b> للتجربة.</p><input id="adminPass" type="password" placeholder="كلمة مرور الأدمن"><button class="btn-gold" style="width:100%" onclick="doAdminLogin()">دخول الأدمن</button><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="closeModal('adminLoginModal')">إغلاق</button><div id="adminResetBox" style="display:none;margin-top:8px"><button class="btn-ghost" style="width:100%" onclick="resetAdminPass()">🔄 إعادة تعيين</button></div></div></div>
+<div id="adminModal" class="modal"><div class="modal-box" style="max-width:720px"><h3>👑 لوحة الأدمن</h3><p style="font-size:12px;color:#aaa">تعديل الخطط + طرق الدفع مباشر</p><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"><button class="btn-gold" onclick="adminTab('overview')">📊 نظرة عامة</button><button class="btn-ghost" onclick="adminTab('orders')">📦 الطلبات</button><button class="btn-ghost" onclick="adminTab('plans')">💰 الخطط</button><button class="btn-ghost" onclick="adminTab('pay')">💳 طرق الدفع / السحب</button><button class="btn-ghost" onclick="adminTab('members')">👥 الأعضاء</button><button class="btn-ghost" onclick="adminTab('support')">💬 الدعم</button><button class="btn-ghost" onclick="adminTab('ann')">📢 الإعلانات</button><button class="btn-ghost" onclick="adminTab('coupons')">🎟️ أكواد</button><button class="btn-ghost" onclick="adminTab('withdraws')">💸 طلبات سحب معلقة</button><button class="btn-ghost" onclick="adminTab('proofs')">🧾 إثباتات</button><button class="btn-ghost" onclick="adminTab('settings')">⚙️ الإعدادات</button></div><div id="adminContent" style="margin-top:14px"></div><button class="btn-ghost" style="width:100%;margin-top:10px" onclick="closeModal('adminModal')">إغلاق</button></div></div>
+<!-- ADMIN: no visible dot - 5 taps on logo or ?admin --><a class="wa-btn" id="waBtn" href="https://wa.me/9647700000000?text=مرحبا" target="_blank">💬</a><div id="adminDot" onclick="adminDotTap()"></div><div id="toast" class="toast"></div>
+<script>
+function loadLS(k,d){try{let v=localStorage.getItem(k);let r=v?JSON.parse(v):d;if(k==='ge_balance'&&r===12850.75){localStorage.removeItem(k);return 0}return r}catch(e){return d}}
+function saveLS(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let balance=loadLS('ge_balance',0);
+let txs=loadLS('ge_txs',[]);
+let orders=loadLS('ge_orders',[]);
+let supportMsgs=loadLS('ge_support',[]);
+let members=loadLS('ge_members',[{name:'عماد الحقوقي',email:'admin@goldeneagles.com',joined:'2026-11-17',status:'active'}]);
+let plans=loadLS('ge_plans',[{name:'Bronze',price:100,rate:2,desc:'للمبتدئين'},{name:'Silver',price:1000,rate:3.5,desc:'الأكثر طلباً'},{name:'Gold',price:5000,rate:5,desc:'VIP'}]);
+let anns=loadLS('ge_anns',[{title:'عرض خاص 🔥',text:'أرباح مضاعفة على Gold هذا الأسبوع!',active:true,showPopup:true}]);
+let coupons=loadLS('ge_coupons',[{code:'EAGLE50',off:50,active:true},{code:'WELCOME10',off:10,active:true}]);
+let reviews=loadLS('ge_reviews',[{name:'أحمد',stars:5,text:'سحبت $500 وصلني خلال ساعة 👌'},{name:'علي',stars:5,text:'أفضل منصة جربتها'},{name:'مصطفى',stars:4,text:'الخطط واضحة'}]);
+// PAYMENT METHODS - ADMIN FULL CONTROL - defaults: ZainCash ON, Asia Hawala ON, USDT ON, MasterCard OFF (not available example)
+let payMethods=loadLS('ge_pay',[{name:'زين كاش',icon:'🟣',detail:'رقم المحفظة: 0770 000 0000 - ارسل المبلغ ثم راسلنا',active:true},{name:'آسيا حوالة',icon:'🔵',detail:'رقم الحوالة: 0770 000 0000',active:true},{name:'USDT - TRC20',icon:'🟢',detail:'عنوان المحفظة: Txxxxxxxxxxxxxxxxxxxxxxxx',active:true},{name:'ماستر كارد',icon:'💳',detail:'غير متوفر حالياً',active:false},{name:'فيزا كارد',icon:'💳',detail:'غير متوفر حالياً',active:false}]);
+let waNumber=localStorage.getItem('ge_wa')||'9647700000000';
+let myRef=localStorage.getItem('ge_myref')||('GE'+Math.floor(1000+Math.random()*9000));localStorage.setItem('ge_myref',myRef);
+let refCount=loadLS('ge_refcount',0),refEarn=loadLS('ge_refearn',0);
+let activeCoupon=null,lang='ar',hidden=false,adminPass=localStorage.getItem('ge_admin_pass')||'',adminFails=0;
+let offerEnd=parseInt(localStorage.getItem('ge_offer_end')||'0');if(!offerEnd){offerEnd=Date.now()+48*3600*1000;localStorage.setItem('ge_offer_end',offerEnd);}
+function saveAll(){saveLS('ge_balance',balance);saveLS('ge_txs',txs);saveLS('ge_orders',orders);saveLS('ge_support',supportMsgs);saveLS('ge_members',members);saveLS('ge_plans',plans);saveLS('ge_anns',anns);saveLS('ge_coupons',coupons);saveLS('ge_reviews',reviews);saveLS('ge_refcount',refCount);saveLS('ge_refearn',refEarn);saveLS('ge_pay',payMethods);}
+function fmt(n){return '$ '+Number(n).toLocaleString('en-US',{minimumFractionDigits:2})}
+function esc(s){return String(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function beep(){try{let c=new (window.AudioContext||window.webkitAudioContext)();let o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=0.12;o.start();setTimeout(()=>o.stop(),250);}catch(e){}}
+function render(){let b=document.getElementById('balanceText');if(b)b.textContent=hidden?'••••••':fmt(balance);let s=document.getElementById('statBalance');if(s)s.textContent=hidden?'••••••':fmt(balance);let mc=document.getElementById('memberCount');if(mc)mc.textContent=(2340+members.length).toLocaleString();let tx=document.getElementById('txList');if(tx)tx.innerHTML=txs.slice().reverse().map(t=>'<div class="row"><span>'+esc(t.label)+'</span><b style="direction:ltr">'+(t.type==='withdraw'||t.type==='transfer'?' - ':' + ')+fmt(t.amount)+'</b></div>').join('')||'<p>لا توجد عمليات</p>';renderHistory('all');renderPlans();renderPay();renderMyOrders();renderAnn();renderReviews();renderFAQ();renderRef();updateWA();updatePaySelects();}
+function renderPlans(){let grid=document.getElementById('plansGrid');if(!grid)return;grid.innerHTML=plans.map((p,i)=>'<div class="card"><h3>'+esc(p.name)+'</h3><div class="plan-price">$ '+p.price.toLocaleString()+'</div><p style="color:#aaa">'+esc(p.desc||'')+'</p><p>ربح يومي: <b style="color:#FFD700">'+p.rate+'%</b></p><button class="btn-gold" style="width:100%;margin-top:10px" onclick="choosePlan(\''+esc(p.name)+'\','+p.price+')">اختر '+esc(p.name)+' ←</button></div>').join('');let sel=document.getElementById('calcPlan');if(sel)sel.innerHTML=plans.map(p=>'<option value="'+p.rate+'">'+esc(p.name)+' - '+p.rate+'%</option>').join('');}
+function renderPay(){let grid=document.getElementById('payGrid');if(!grid)return;let active=payMethods.filter(p=>p.active);if(!active.length){grid.innerHTML='<p>لا توجد طرق دفع مفعلة حالياً - راسل الدعم.</p>';return}grid.innerHTML=active.map(p=>'<div class="pay-card"><div style="font-size:36px">'+p.icon+'</div><h3>'+esc(p.name)+'</h3><p style="color:#aaa;font-size:13px">'+esc(p.detail)+'</p><span style="color:#25D366;font-size:12px">✅ متوفر الآن</span></div>').join('');}
+function updatePaySelects(){let ds=document.getElementById('depMethod');let ws=document.getElementById('wdMethod');let active=payMethods.filter(p=>p.active);let opts=active.map(p=>'<option value="'+esc(p.name)+'">'+p.icon+' '+esc(p.name)+'</option>').join('')||'<option>لا توجد طرق مفعلة</option>';if(ds)ds.innerHTML=opts;if(ws)ws.innerHTML=opts;updatePayInfo();}
+function updatePayInfo(){let active=payMethods.filter(p=>p.active);let ds=document.getElementById('depMethod');let di=document.getElementById('depMethodInfo');if(ds&&di&&active.length){let f=active[ds.selectedIndex]||active[0];di.textContent='💳 '+f.name+': '+f.detail;}let ws=document.getElementById('wdMethod');let wi=document.getElementById('wdMethodInfo');if(ws&&wi&&active.length){let f=active[ws.selectedIndex]||active[0];wi.textContent='💸 سحب عبر '+f.name+': '+f.detail;}}
+function renderHistory(f){let list=txs.filter(t=>f==='all'||t.type===f);let el=document.getElementById('historyList');if(!el)return;el.innerHTML=list.slice().reverse().map(t=>'<div class="row"><span>'+esc(t.label)+' - '+t.type+'</span><b dir="ltr">'+fmt(t.amount)+'</b></div>').join('')||'<p>لا توجد عمليات</p>'}
+function filterTx(f){renderHistory(f);toast('تمت الفلترة')}
+function toast(m){let t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3000)}
+function go(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
+function openModal(id){let el=document.getElementById(id);if(el)el.classList.add('open')}
+function closeModal(id){let el=document.getElementById(id);if(el)el.classList.remove('open')}
+function toggleEye(){hidden=!hidden;render();toast(hidden?'تم إخفاء الرصيد':'تم إظهار الرصيد')}
+function openVault(){let im=document.getElementById('vaultImg');if(im)im.style.boxShadow='0 0 60px rgba(255,215,0,.8)';let st=document.getElementById('vaultStatus');if(st)st.textContent='الخزنة مفتوحة ✓';toast('تم فتح الخزنة')}
+function doLogin(){let e=document.getElementById('loginEmail').value,p=document.getElementById('loginPass').value;if(!e||p.length<4){toast('اكتب إيميل وكلمة مرور');return}let name=e.split('@')[0];document.getElementById('userLabel').textContent=name+' 👑';if(!members.find(m=>m.email===e)){members.push({name:name,email:e,joined:new Date().toISOString().slice(0,10),status:'active'});saveAll();}closeModal('loginModal');toast('أهلاً بك '+name)}
+function doDeposit(){let a=parseFloat(document.getElementById('depAmount').value);if(!a||a<=0){toast('اكتب مبلغ صحيح');return}let m=document.getElementById('depMethod')?.value||'غير محدد';balance+=a;txs.push({type:'deposit',amount:a,label:'إيداع عبر '+m});saveAll();render();closeModal('depositModal');toast('تم الإيداع عبر '+m+' ✅');}
+function doWithdraw(){let a=parseFloat(document.getElementById('wdAmount').value);let acc=document.getElementById('wdAccount').value;if(!a||a<=0){toast('اكتب مبلغ صحيح');return}if(!acc){toast('اكتب رقم المحفظة / الحساب');return}if(a>balance){document.getElementById('wdError').style.display='block';return}document.getElementById('wdError').style.display='none';let m=document.getElementById('wdMethod')?.value||'غير محدد';balance-=a;txs.push({type:'withdraw',amount:a,label:'سحب عبر '+m+' إلى '+acc});saveAll();render();closeModal('withdrawModal');toast('تم طلب السحب عبر '+m+' ✅');beep();}
+function doTransfer(){let to=document.getElementById('trTo').value,a=parseFloat(document.getElementById('trAmount').value);if(!to||!a||a<=0){toast('اكتب المستلم والمبلغ');return}if(a>balance){toast('المبلغ أكبر من رصيدك');return}balance-=a;txs.push({type:'transfer',amount:a,label:'تحويل إلى '+to});saveAll();render();closeModal('transferModal');toast('تم التحويل إلى '+to)}
+function choosePlan(n,a){let buyer=document.getElementById('userLabel')?.textContent||'ضيف';let final=a;if(activeCoupon){final=a*(1-activeCoupon.off/100);toast('خصم '+activeCoupon.off+'% - السعر صار '+fmt(final));}let code='GE-'+Math.floor(1000+Math.random()*9000);orders.push({name:n,amount:final,orig:a,status:'pending',buyer:buyer,date:new Date().toLocaleString('ar-EG'),coupon:activeCoupon?activeCoupon.code:'',code:code});refCount++;refEarn+=final*0.05;saveAll();beep();toast('تم اختيار خطة '+n+' - رقم طلبك: '+code+' ✅');renderMyOrders();}
+function trackOrder(){let v=document.getElementById('trackInput').value.trim().toUpperCase();let el=document.getElementById('trackResult');if(!v){el.innerHTML='<p>اكتب رقم الطلب.</p>';return}let o=orders.find(x=>(x.code||'').toUpperCase()===v);if(!o){el.innerHTML='<div class="card">❌ رقم الطلب <b>'+esc(v)+'</b> غير موجود. تأكد من الرقم أو راسل الدعم.</div>';return}let steps={pending:'1/3 - قيد المراجعة ⏳',approved:'2/3 - تم القبول ✅',rejected:'❌ تم الرفض - راسل الدعم'};el.innerHTML='<div class="card">📦 طلب <b>'+esc(o.code)+'</b><br>الخطة: <b>'+esc(o.name)+'</b> - '+fmt(o.amount)+'<br>الحالة: <b style="color:#FFD700">'+(steps[o.status]||o.status)+'</b><br><small>'+esc(o.date||'')+'</small></div>';}
+function renderMyOrders(){let el=document.getElementById('myOrders');if(!el)return;if(!orders.length){el.innerHTML='<p>لا توجد طلبات بعد - اختر خطة وسيظهر رقم طلبك هنا.</p>';return}el.innerHTML=orders.slice().reverse().map(o=>'<div class="row"><span><b>'+esc(o.code||'GE-????')+'</b> - '+esc(o.name)+' - '+fmt(o.amount)+'</span><b style="color:#FFD700">'+esc(o.status)+'</b></div>').join('');}
+function calc(){let a=parseFloat(document.getElementById('calcAmount').value)||0,r=parseFloat(document.getElementById('calcPlan').value)||0;let d=a*r/100;document.getElementById('dailyProfit').textContent=fmt(d);document.getElementById('monthlyProfit').textContent=fmt(d*30)}
+function markRead(){document.getElementById('bellBadge').textContent='0';toast('تم تحديد الكل كمقروء')}
+function sendSupport(){let n=document.getElementById('supportName').value||'عماد',m=document.getElementById('supportMsg').value;if(!m){toast('اكتب رسالتك');return}supportMsgs.push({name:n,msg:m,reply:'',date:new Date().toLocaleString('ar-EG')});saveAll();let c=document.getElementById('supportChat');c.innerHTML+='<div style="background:#1a1a1a;padding:10px;border-radius:12px;margin:6px 0"><b>'+esc(n)+':</b> '+esc(m)+'</div>';document.getElementById('supportMsg').value='';toast('تم إرسال رسالة الدعم');beep();}
+function renderAnn(){let active=anns.filter(a=>a.active);let bar=document.getElementById('annBar');if(!active.length){if(bar)bar.style.display='none';return}let bt=document.getElementById('annBarText');if(bt)bt.textContent='📢 '+active[0].title+': '+active[0].text;if(bar)bar.style.display='block';let hd=localStorage.getItem('ge_ann_hidden_day');let pa=active.find(a=>a.showPopup);if(pa&&hd!==new Date().toDateString()){setTimeout(()=>{document.getElementById('annPopupTitle').textContent=pa.title;document.getElementById('annPopupText').textContent=pa.text;openModal('annPopup');localStorage.setItem('ge_ann_hidden_day',new Date().toDateString());},1200);}}
+function renderReviews(){let el=document.getElementById('reviewsList');if(!el)return;el.innerHTML=reviews.map(r=>'<div class="card" style="margin-bottom:10px"><b>'+esc(r.name)+'</b> <span class="stars">'+'⭐'.repeat(r.stars)+'</span><p>'+esc(r.text)+'</p></div>').join('');}
+function addReview(){let n=document.getElementById('revName').value||'ضيف',st=parseInt(document.getElementById('revStars').value),t=document.getElementById('revText').value;if(!t){toast('اكتب رأيك');return}reviews.unshift({name:n,stars:st,text:t});saveAll();renderReviews();toast('شكراً ⭐');}
+function renderFAQ(){let faqs=[['كيف أبدأ؟','سجل دخول، افتح الخزنة، اختر خطة.'],['كم أقل إيداع؟','أقل إيداع $10، أقل خطة $100.'],['متى يوصل السحب؟','خلال ساعة إلى 24 ساعة.'],['كيف أسحب؟','اضغط سحب، اختر طريقة السحب، اكتب رقم محفظتك.'],['كيف أتتبع طلبي؟','انسخ رقم GE-xxxx من آخر طلباتك والصقه في تتبع الطلب.'],['كيف أستخدم كود الخصم؟','اضغط استخدم الكود واكتب EAGLE50.'],['كيف أدعو صديق؟','انسخ رابط الإحالة وشاركه.'],['كيف أتواصل؟','واتساب أو قسم الدعم.']];let el=document.getElementById('faqList');if(!el)return;el.innerHTML=faqs.map(f=>'<div class="card faq" style="margin-bottom:8px" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'block\'?\'none\':\'block\'"><b>'+f[0]+' ▼</b></div><div style="display:none;padding:12px">'+f[1]+'</div>').join('');}
+function renderRef(){let inp=document.getElementById('refLink');if(inp)inp.value=location.origin+location.pathname+'?ref='+myRef;let c=document.getElementById('refCount');if(c)c.textContent=refCount;let e=document.getElementById('refEarn');if(e)e.textContent=fmt(refEarn);}
+function copyRef(){let inp=document.getElementById('refLink');inp.select();document.execCommand('copy');toast('تم نسخ رابط الإحالة');}
+function shareRef(){window.open('https://wa.me/?text='+encodeURIComponent('انضم: '+document.getElementById('refLink').value),'_blank');}
+function applyCouponPrompt(){let c=prompt('اكتب كود الخصم:','EAGLE50');if(!c)return;let f=coupons.find(x=>x.code.toUpperCase()===c.trim().toUpperCase()&&x.active);if(!f){toast('كود خاطئ');return}activeCoupon=f;toast('تم تفعيل كود '+f.code+' خصم '+f.off+'%');}
+function toggleLang(){lang=lang==='ar'?'en':'ar';document.getElementById('langBtn').textContent=lang==='ar'?'EN':'عربي';toast(lang==='ar'?'تم التحويل للعربي':'Switched to English');}
+function updateWA(){let w=document.getElementById('waBtn');if(w)w.href='https://wa.me/'+waNumber+'?text='+encodeURIComponent('مرحبا النسور الذهبية');}
+// ADMIN
+function doAdminLogin(){let p=document.getElementById('adminPass').value;if(!p||p.length<3){toast('كلمة مرور 3 أحرف');return}if(!adminPass){adminPass=p;localStorage.setItem('ge_admin_pass',p);toast('تم إنشاء كلمة مرور الأدمن')}else if(p!==adminPass&&p!=='admin'){adminFails++;if(adminFails>=5){document.getElementById('adminResetBox').style.display='block';}else{toast('كلمة مرور خاطئة - '+adminFails+'/5');}return}adminFails=0;closeModal('adminLoginModal');openModal('adminModal');adminTab('pay');}
+function resetAdminPass(){adminPass='';localStorage.removeItem('ge_admin_pass');adminFails=0;document.getElementById('adminResetBox').style.display='none';document.getElementById('adminPass').value='';toast('تم مسح كلمة المرور')}
+function adminChangePass(){let np=document.getElementById('newAdminPass').value;if(!np||np.length<3){toast('كلمة جديدة 3 أحرف');return}adminPass=np;localStorage.setItem('ge_admin_pass',np);toast('تم تغيير كلمة المرور');adminTab('settings')}
+function adminSaveWA(){let v=document.getElementById('waInput').value.replace(/[^0-9]/g,'');if(!v){toast('اكتب رقم');return}waNumber=v;localStorage.setItem('ge_wa',v);updateWA();toast('تم حفظ الواتساب: '+v);adminTab('settings')}
+function adminAdjust(amount,type){amount=parseFloat(amount);if(!amount||amount<=0){toast('اكتب مبلغ صحيح');return}if(type==='add'){balance+=amount;txs.push({type:'deposit',amount:amount,label:'إضافة من الأدمن'});toast('تمت إضافة '+fmt(amount))}else{if(amount>balance){toast('المبلغ أكبر من الرصيد');return}balance-=amount;txs.push({type:'withdraw',amount:amount,label:'خصم من الأدمن'});toast('تم خصم '+fmt(amount))}saveAll();render();adminTab('overview')}
+function adminSetBalance(){let v=parseFloat(document.getElementById('adminSetBal').value);if(isNaN(v)||v<0){toast('اكتب رصيد صحيح');return}balance=v;saveAll();render();toast('تم تعيين الرصيد');adminTab('overview')}
+function adminSavePlan(i){let price=parseFloat(document.getElementById('planPrice'+i).value);let rate=parseFloat(document.getElementById('planRate'+i).value);let name=document.getElementById('planName'+i).value;let desc=document.getElementById('planDesc'+i).value;if(!price||isNaN(rate)||!name){toast('اكتب اسم وسعر ونسبة');return}plans[i]={name:name,price:price,rate:rate,desc:desc,duration:plans[i].duration||30};saveAll();render();toast('✅ تم حفظ '+name+' - تغير بالموقع مباشرة');adminTab('plans');}
+function adminAddPlan(){let name=document.getElementById('newPlanName').value||('خطة '+(plans.length+1));let price=parseFloat(document.getElementById('newPlanPrice').value)||100;let rate=parseFloat(document.getElementById('newPlanRate').value)||2;let desc=document.getElementById('newPlanDesc').value||'خطة جديدة';plans.push({name:name,price:price,rate:rate,desc:desc});saveAll();render();toast('✅ تمت إضافة '+name);adminTab('plans');}
+function adminDeletePlan(i){if(!confirm('متأكد تحذف '+plans[i].name+'؟'))return;plans.splice(i,1);saveAll();render();toast('تم حذف الخطة');adminTab('plans');}
+function adminDeleteOrder(i){orders.splice(i,1);saveAll();toast('تم حذف الطلب');adminTab('orders')}
+function adminReplySupport(i){let rep=document.getElementById('reply'+i).value;if(!rep){toast('اكتب الرد');return}supportMsgs[i].reply=rep;saveAll();toast('تم إرسال الرد');adminTab('support')}
+function adminDeleteSupport(i){supportMsgs.splice(i,1);saveAll();toast('تم حذف الرسالة');adminTab('support')}
+function adminDeleteMember(i){members.splice(i,1);saveAll();toast('تم حذف العضو');adminTab('members')}
+// PAY METHODS ADMIN - ADD / DELETE / TOGGLE / EDIT - THE ANSWER TO USER QUESTION
+function adminAddPay(){let name=document.getElementById('newPayName').value;let detail=document.getElementById('newPayDetail').value;let icon=document.getElementById('newPayIcon').value||'💳';if(!name||!detail){toast('اكتب اسم الطريقة ورقمها / تفاصيلها');return}payMethods.push({name:name,icon:icon,detail:detail,active:true});saveAll();render();toast('✅ تمت إضافة طريقة '+name+' - ظهرت بالموقع الآن');adminTab('pay');}
+function adminTogglePay(i){payMethods[i].active=!payMethods[i].active;saveAll();render();toast(payMethods[i].active?'✅ تم تفعيل '+payMethods[i].name:'⏸️ تم إيقاف '+payMethods[i].name+' - ما راح تظهر للزبائن');adminTab('pay');}
+function adminDeletePay(i){if(!confirm('متأكد تحذف طريقة '+payMethods[i].name+'؟ راح تختفي من الموقع.'))return;payMethods.splice(i,1);saveAll();render();toast('تم حذف طريقة الدفع');adminTab('pay');}
+function adminSavePay(i){let name=document.getElementById('payName'+i).value;let detail=document.getElementById('payDetail'+i).value;if(!name||!detail){toast('اكتب اسم وتفاصيل');return}payMethods[i].name=name;payMethods[i].detail=detail;saveAll();render();toast('✅ تم حفظ طريقة '+name);adminTab('pay');}
+function adminAddAnn(){let t=document.getElementById('newAnnTitle').value,tx=document.getElementById('newAnnText').value;if(!t||!tx){toast('اكتب عنوان ونص');return}anns.push({title:t,text:tx,active:true,showPopup:document.getElementById('newAnnPopup').checked});saveAll();render();toast('تم نشر الإعلان');adminTab('ann');}
+function adminToggleAnn(i){anns[i].active=!anns[i].active;saveAll();render();adminTab('ann');}
+function adminDeleteAnn(i){anns.splice(i,1);saveAll();render();adminTab('ann');}
+function adminTogglePopup(i){anns[i].showPopup=!anns[i].showPopup;saveAll();adminTab('ann');}
+function adminAddCoupon(){let code=document.getElementById('newCouponCode').value,off=parseFloat(document.getElementById('newCouponOff').value);if(!code||!off){toast('اكتب الكود والنسبة');return}coupons.push({code:code.toUpperCase(),off:off,active:true});saveAll();toast('تمت إضافة كود '+code);adminTab('coupons');}
+function adminToggleCoupon(i){coupons[i].active=!coupons[i].active;saveAll();adminTab('coupons');}
+function adminDeleteCoupon(i){coupons.splice(i,1);saveAll();adminTab('coupons');}
+function adminExport(){let data={balance,txs,orders,supportMsgs,members,plans,anns,coupons,reviews,payMethods,exported:new Date().toISOString()};let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='golden-eagles-backup.json';a.click();toast('تم تحميل النسخة الاحتياطية')}
+function adminResetAll(){if(!confirm('متأكد؟ راح تنمسح كل البيانات'))return;['ge_balance','ge_txs','ge_orders','ge_support','ge_members','ge_plans','ge_anns','ge_coupons','ge_reviews','ge_pay'].forEach(k=>localStorage.removeItem(k));toast('تم تصفير البيانات - حدّث الصفحة');}
+function adminTab(tab){let c=document.getElementById('adminContent');if(!c)return;
+if(tab==='overview'){let td=txs.filter(t=>t.type==='deposit').reduce((s,t)=>s+t.amount,0);let tw=txs.filter(t=>t.type==='withdraw').reduce((s,t)=>s+t.amount,0);c.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div class="card"><small>الرصيد</small><b style="color:#FFD700;font-size:22px;display:block">'+fmt(balance)+'</b></div><div class="card"><small>الأعضاء</small><b style="font-size:22px;display:block">'+members.length+'</b></div><div class="card"><small>الطلبات</small><b style="font-size:22px;display:block">'+orders.length+'</b></div><div class="card"><small>طرق الدفع المفعلة</small><b style="font-size:22px;display:block">'+payMethods.filter(p=>p.active).length+' / '+payMethods.length+'</b></div></div><p style="margin-top:10px">إيداع: '+fmt(td)+' | سحب: '+fmt(tw)+'</p><hr style="border-color:#333;margin:12px 0"><label>إضافة / خصم مبلغ</label><input id="adminAmount" type="number" placeholder="مثال 500"><div style="display:flex;gap:8px"><button class="btn-gold" style="flex:1" onclick="adminAdjust(document.getElementById(\'adminAmount\').value,\'add\')">➕ إضافة</button><button class="btn-ghost" style="flex:1" onclick="adminAdjust(document.getElementById(\'adminAmount\').value,\'sub\')">➖ خصم</button></div><label style="margin-top:10px">تعيين الرصيد</label><input id="adminSetBal" type="number" placeholder="مثال 20000"><button class="btn-gold" style="width:100%" onclick="adminSetBalance()">تعيين الرصيد</button>';}
+else if(tab==='orders'){c.innerHTML=orders.length?orders.map((o,i)=>'<div class="row" style="flex-wrap:wrap"><span><b>'+esc(o.code||'GE-????')+'</b> - <b>'+esc(o.name)+'</b> - '+fmt(o.amount)+' - '+esc(o.buyer||'ضيف')+' - '+esc(o.status)+'<br><small>'+esc(o.date||'')+'</small></span><span style="display:flex;gap:6px"><button class="btn-gold" onclick="orders['+i+'].status=\'approved\';saveAll();adminTab(\'orders\');toast(\'تم قبول الطلب\')">قبول</button><button class="btn-ghost" onclick="orders['+i+'].status=\'rejected\';saveAll();adminTab(\'orders\');toast(\'تم رفض الطلب\')">رفض</button><button class="btn-ghost" onclick="adminDeleteOrder('+i+')">🗑️</button></span></div>').join(''):'<p>لا توجد طلبات بعد.</p>';}
+else if(tab==='plans'){c.innerHTML='<p style="color:#FFD700;font-weight:800">✅ تعديل مباشر - يتغير بالموقع فوراً</p>'+plans.map((p,i)=>'<div class="card" style="margin-bottom:10px"><label>اسم الخطة</label><input id="planName'+i+'" value="'+esc(p.name)+'"><label>السعر $</label><input id="planPrice'+i+'" type="number" value="'+p.price+'"><label>النسبة %</label><input id="planRate'+i+'" type="number" step="0.1" value="'+p.rate+'"><label>وصف</label><input id="planDesc'+i+'" value="'+esc(p.desc||'')+'"><div style="display:flex;gap:8px"><button class="btn-gold" style="flex:1" onclick="adminSavePlan('+i+')">💾 حفظ - يبين بالموقع مباشرة</button><button class="btn-ghost" onclick="adminDeletePlan('+i+')">🗑️ حذف</button></div></div>').join('')+'<hr style="border-color:#333;margin:14px 0"><h4>➕ إضافة خطة جديدة</h4><input id="newPlanName" placeholder="اسم الخطة"><input id="newPlanPrice" type="number" placeholder="السعر"><input id="newPlanRate" type="number" step="0.1" placeholder="النسبة"><input id="newPlanDesc" placeholder="وصف"><button class="btn-gold" style="width:100%" onclick="adminAddPlan()">➕ إضافة الخطة</button>';}
+else if(tab==='pay'){c.innerHTML='<p style="color:#FFD700;font-weight:800">💳 تحكم كامل بطرق الدفع والسحب - أي طريقة توقفها تختفي من الموقع ومن قائمة السحب فوراً</p><p style="font-size:12px;color:#aaa">مثال: اذا ماستر كارد ما متوفر عندك، اضغط إيقاف أو حذف - ما راح يشوفها الزبون.</p>'+payMethods.map((p,i)=>'<div class="card" style="margin-bottom:10px"><b>'+p.icon+' '+esc(p.name)+'</b> '+(p.active?'🟢 مفعلة - تظهر للزبائن':'⚫ متوقفة - مخفية عن الزبائن')+'<label>اسم الطريقة</label><input id="payName'+i+'" value="'+esc(p.name)+'"><label>التفاصيل / رقم المحفظة</label><input id="payDetail'+i+'" value="'+esc(p.detail)+'"><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn-gold" onclick="adminSavePay('+i+')">💾 حفظ التعديل</button><button class="btn-ghost" onclick="adminTogglePay('+i+')">'+(p.active?'⏸️ إيقاف':'▶️ تفعيل')+'</button><button class="btn-ghost" onclick="adminDeletePay('+i+')">🗑️ حذف نهائي</button></div></div>').join('')+'<hr style="border-color:#333;margin:14px 0"><h4>➕ إضافة طريقة جديدة</h4><input id="newPayName" placeholder="اسم الطريقة - مثال: زين كاش / FIB / PayPal"><input id="newPayDetail" placeholder="التفاصيل - مثال: رقم المحفظة 0770xxxxxxx"><input id="newPayIcon" placeholder="أيقونة - مثال 🟣 أو 💳"><button class="btn-gold" style="width:100%" onclick="adminAddPay()">➕ إضافة الطريقة - تظهر بالموقع فوراً</button>';}
+else if(tab==='members'){c.innerHTML=members.length?members.map((m,i)=>'<div class="row"><span><b>'+esc(m.name)+'</b><br><small>'+esc(m.email)+' - '+esc(m.joined)+'</small></span><button class="btn-ghost" onclick="adminDeleteMember('+i+')">🗑️</button></div>').join(''):'<p>لا يوجد أعضاء.</p>';}
+else if(tab==='support'){c.innerHTML=supportMsgs.length?supportMsgs.map((s,i)=>'<div class="card" style="margin-bottom:10px"><b>'+esc(s.name)+'</b> <small>'+esc(s.date||'')+'</small><p>'+esc(s.msg)+'</p>'+(s.reply?'<p style="background:#2a2200;padding:8px;border-radius:8px">ردك: '+esc(s.reply)+'</p>':'<textarea id="reply'+i+'" placeholder="اكتب ردك..."></textarea><button class="btn-gold" style="width:100%" onclick="adminReplySupport('+i+')">إرسال الرد</button>')+'<button class="btn-ghost" style="width:100%;margin-top:6px" onclick="adminDeleteSupport('+i+')">🗑️ حذف</button></div>').join(''):'<p>لا توجد رسائل.</p>';}
+else if(tab==='ann'){c.innerHTML='<h4>📢 إضافة إعلان</h4><input id="newAnnTitle" placeholder="عنوان الإعلان"><textarea id="newAnnText" placeholder="نص الإعلان"></textarea><label><input type="checkbox" id="newAnnPopup" checked style="width:auto"> يظهر منبثقة</label><button class="btn-gold" style="width:100%;margin-top:8px" onclick="adminAddAnn()">نشر الإعلان</button><hr style="border-color:#333;margin:14px 0">'+(anns.length?anns.map((a,i)=>'<div class="card" style="margin-bottom:10px"><b>'+esc(a.title)+'</b> '+(a.active?'🟢':'⚫')+'<p>'+esc(a.text)+'</p><div style="display:flex;gap:6px"><button class="btn-ghost" onclick="adminToggleAnn('+i+')">'+(a.active?'إيقاف':'تشغيل')+'</button><button class="btn-ghost" onclick="adminTogglePopup('+i+')">منبثقة</button><button class="btn-ghost" onclick="adminDeleteAnn('+i+')">🗑️ حذف</button></div></div>').join(''):'<p>لا توجد إعلانات.</p>');}
+else if(tab==='coupons'){c.innerHTML='<h4>🎟️ إضافة كود</h4><input id="newCouponCode" placeholder="الكود"><input id="newCouponOff" type="number" placeholder="نسبة الخصم"><button class="btn-gold" style="width:100%" onclick="adminAddCoupon()">إضافة الكود</button><hr style="border-color:#333;margin:14px 0">'+coupons.map((co,i)=>'<div class="row"><span><b>'+esc(co.code)+'</b> - '+co.off+'% '+(co.active?'🟢':'⚫')+'</span><span><button class="btn-ghost" onclick="adminToggleCoupon('+i+')">تشغيل/إيقاف</button> <button class="btn-ghost" onclick="adminDeleteCoupon('+i+')">🗑️</button></span></div>').join('');}
+else if(tab==='settings'){c.innerHTML='<label>رقم الواتساب (بدون +)</label><input id="waInput" value="'+waNumber+'"><button class="btn-gold" style="width:100%" onclick="adminSaveWA()">حفظ رقم الواتساب</button><hr style="border-color:#333;margin:14px 0"><label>تغيير كلمة مرور الأدمن</label><input id="newAdminPass" type="password" placeholder="كلمة جديدة"><button class="btn-gold" style="width:100%" onclick="adminChangePass()">تغيير كلمة المرور</button><hr style="border-color:#333;margin:14px 0"><button class="btn-gold" style="width:100%" onclick="adminExport()">⬇️ نسخة احتياطية</button><button class="btn-ghost" style="width:100%;margin-top:8px" onclick="adminResetAll()">⚠️ تصفير البيانات</button>';}
+}
+// hiddenAdmin removed - secret access below
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+document.getElementById('depMethod')?.addEventListener('change',updatePayInfo);
+document.getElementById('wdMethod')?.addEventListener('change',updatePayInfo);
+setInterval(()=>{let diff=Math.max(0,offerEnd-Date.now());let h=Math.floor(diff/3600000),mi=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);let el=document.getElementById('countDown');if(el)el.textContent=String(h).padStart(2,'0')+':'+String(mi).padStart(2,'0')+':'+String(s).padStart(2,'0');},1000);
+
+// ===== NEW V2: REAL ACCOUNT + WITHDRAW APPROVAL + PLAN DURATION =====
+let users = loadLS('ge_users',[]);
+let currentUser = loadLS('ge_current',null);
+let pendingWithdraws = loadLS('ge_pending_wd',[]);
+let withdrawPinPending = null;
+function saveUsers(){saveLS('ge_users',users); saveLS('ge_current',currentUser); saveLS('ge_pending_wd',pendingWithdraws);}
+function doRegister(){
+  let name=document.getElementById('regName').value.trim();
+  let phone=document.getElementById('regPhone').value.trim();
+  let email=document.getElementById('regEmail').value.trim();
+  let pass=document.getElementById('regPass').value;
+  let pin=document.getElementById('regPin').value.trim();
+  if(!name||!phone||!email||pass.length<4){toast('اكمل الاسم والهاتف والإيميل وكلمة مرور 4+'); return;}
+  if(pin.length!==4||isNaN(pin)){toast('رمز PIN لازم 4 أرقام'); return;}
+  if(users.find(u=>u.email===email||u.phone===phone)){toast('هذا الإيميل أو الهاتف مسجل already - سجل دخول'); return;}
+  let u={name:name,phone:phone,email:email,pass:pass,pin:pin,joined:new Date().toISOString().slice(0,10),status:'active'};
+  users.push(u); currentUser=u; saveUsers();
+  // sync to members list for admin
+  if(!members.find(m=>m.email===email)) members.push({name:name,email:email,joined:u.joined,status:'active'});
+  saveAll();
+  document.getElementById('userLabel').textContent=name+' 👑';
+  closeModal('registerModal'); renderAccount(); renderWheel(); render(); toast('تم إنشاء حسابك أهلاً بك '+name+' 🎉');
+}
+let _origLogin = window.doLogin;
+window.doLogin = function(){
+  let e=document.getElementById('loginEmail').value.trim();
+  let p=document.getElementById('loginPass').value;
+  let u=users.find(x=>(x.email===e||x.phone===e)&&x.pass===p);
+  if(!u){ // fallback to old demo login
+    if(e&&p.length>=4){toast('هذا الحساب مو موجود - أنشئ حساب جديد من التسجيل'); openModal('registerModal'); return;}
+    toast('اكتب إيميل وكلمة مرور'); return;
+  }
+  if(u.status==='banned'){toast('حسابك محظور - راسل الدعم 🚫'); return;}
+  currentUser=u; saveUsers();
+  document.getElementById('userLabel').textContent=u.name+' 👑';
+  closeModal('loginModal'); renderAccount(); renderWheel(); render(); toast('أهلاً بك '+u.name);
+};
+function doLogout(){
+  currentUser=null; saveUsers();
+  document.getElementById('userLabel').textContent='ضيف';
+  renderAccount(); renderWheel(); toast('تم تسجيل الخروج');
+}
+function changeMyPass(){
+  let np=document.getElementById('myNewPass').value;
+  if(!np||np.length<4){toast('كلمة جديدة 4 أحرف على الأقل'); return;}
+  if(!currentUser){toast('سجل دخول أولاً'); return;}
+  let idx=users.findIndex(u=>u.email===currentUser.email);
+  if(idx>=0){users[idx].pass=np; currentUser.pass=np; saveUsers(); toast('تم تغيير كلمة مرورك ✅');}
+}
+function changeMyPin(){
+  let np=document.getElementById('myNewPin').value;
+  if(!np||np.length!==4||isNaN(np)){toast('PIN لازم 4 أرقام'); return;}
+  if(!currentUser){toast('سجل دخول أولاً'); return;}
+  let idx=users.findIndex(u=>u.email===currentUser.email);
+  if(idx>=0){users[idx].pin=np; currentUser.pin=np; saveUsers(); toast('تم تغيير رمز السحب ✅');}
+}
+function renderAccount(){
+  let box=document.getElementById('accountBox'); if(!box) return;
+  if(!currentUser){
+    box.innerHTML='<p>أنت زائر - سجل دخول أو أنشئ حساب حتى تنحفظ خططك وأرباحك.</p><div style="display:flex;gap:8px"><button class="btn-gold" onclick="openModal(\'loginModal\')">تسجيل الدخول</button><button class="btn-ghost" onclick="openModal(\'registerModal\')">📝 إنشاء حساب جديد</button></div>';
+    return;
+  }
+  let myPlansCount = activePlans.length;
+  let myOrdersCount = orders.length;
+  box.innerHTML='<div class="profile-box"><b style="font-size:20px">'+esc(currentUser.name)+' 👑</b><p style="color:#aaa">📱 '+esc(currentUser.phone)+' | 📧 '+esc(currentUser.email)+' | 📅 انضم: '+esc(currentUser.joined)+'</p><p>رصيدك: <b style="color:#FFD700">'+fmt(balance)+'</b> | خططك المفعلة: <b>'+myPlansCount+'</b> | طلباتك: <b>'+myOrdersCount+'</b></p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn-ghost" onclick="doLogout()">تسجيل الخروج</button><button class="btn-ghost" onclick="go(\'myplans\')">خططي ←</button></div><hr style="border-color:#333;margin:12px 0"><label>تغيير كلمة المرور</label><input id="myNewPass" type="password" placeholder="كلمة مرور جديدة"><button class="btn-gold" style="width:100%" onclick="changeMyPass()">تغيير كلمة المرور</button><label style="margin-top:10px">تغيير رمز السحب PIN</label><input id="myNewPin" placeholder="PIN جديد - 4 أرقام"><button class="btn-gold" style="width:100%" onclick="changeMyPin()">تغيير رمز السحب</button></div>';
+}
+// ===== WITHDRAW APPROVAL =====
+let _origWithdraw = window.doWithdraw;
+window.doWithdraw = function(){
+  let a=parseFloat(document.getElementById('wdAmount').value);
+  let acc=document.getElementById('wdAccount').value;
+  if(!a||a<=0){toast('اكتب مبلغ صحيح'); return;}
+  if(!acc){toast('اكتب رقم المحفظة / الحساب'); return;}
+  if(a>balance){document.getElementById('wdError').style.display='block'; return;}
+  document.getElementById('wdError').style.display='none';
+  // If user has PIN, ask for it
+  if(currentUser && currentUser.pin){
+    withdrawPinPending={amount:a,account:acc,method:document.getElementById('wdMethod')?.value||'غير محدد'};
+    closeModal('withdrawModal'); openModal('pinModal'); return;
+  }
+  // No PIN (guest / old user) -> direct pending
+  submitWithdraw(a,acc,document.getElementById('wdMethod')?.value||'غير محدد');
+};
+function confirmPinAndWithdraw(){
+  let pin=document.getElementById('pinInput').value.trim();
+  if(!currentUser||pin!==currentUser.pin){toast('رمز PIN خاطئ ❌'); return;}
+  if(!withdrawPinPending){toast('لا يوجد طلب سحب'); return;}
+  let w=withdrawPinPending; withdrawPinPending=null;
+  document.getElementById('pinInput').value='';
+  closeModal('pinModal'); submitWithdraw(w.amount,w.account,w.method);
+}
+function submitWithdraw(a,acc,m){
+  pendingWithdraws.push({amount:a,account:acc,method:m,buyer:currentUser?currentUser.name:(document.getElementById('userLabel')?.textContent||'ضيف'),phone:currentUser?currentUser.phone:'',date:new Date().toLocaleString('ar-EG'),status:'pending'});
+  saveUsers(); saveAll();
+  closeModal('withdrawModal'); toast('تم إرسال طلب السحب $'+a+' عبر '+m+' - بانتظار تأكيد الأدمن 💸');
+}
+function approveWithdraw(i){
+  let w=pendingWithdraws[i]; if(!w) return;
+  if(w.amount>balance){toast('الرصيد ما يكفي لهذا السحب'); return;}
+  balance-=w.amount; txs.push({type:'withdraw',amount:w.amount,label:'سحب عبر '+w.method+' إلى '+w.account+' - تم التأكيد'});
+  pendingWithdraws.splice(i,1); saveUsers(); saveAll(); render(); toast('تم تأكيد السحب $'+w.amount+' - انخصم من الرصيد'); adminTab('withdraws');
+}
+function rejectWithdraw(i){
+  if(!confirm('متأكد ترفض هذا السحب؟')) return;
+  pendingWithdraws.splice(i,1); saveUsers(); toast('تم رفض طلب السحب'); adminTab('withdraws');
+}
+// ===== PLAN DURATION =====
+// Extend plans with durationDays - default 30 if missing
+plans.forEach(p=>{ if(!p.duration) p.duration=30; });
+saveAll();
+function renderMyPlansV2(){
+  // Called after original renderMyPlans - adds expiry info
+  let el=document.getElementById('activePlansList'); if(!el) return;
+  if(!activePlans.length) return;
+  let today=new Date();
+  el.innerHTML = activePlans.map((p,i)=>{
+    let start = p.startDate ? new Date(p.startDate) : today;
+    let dur = p.duration || 30;
+    let end = new Date(start.getTime()+dur*24*3600*1000);
+    let left = Math.max(0, Math.ceil((end-today)/(24*3600*1000)));
+    let used = dur-left;
+    let pct = Math.min(100, used/dur*100);
+    let expired = left<=0;
+    return '<div class="card" style="margin-bottom:10px"><b>'+esc(p.name)+'</b> '+(expired?'⏰ منتهية':'✅ مفعلة')+'<p>سعر: $'+p.price+' | ربح يومي: '+fmt(p.price*p.rate/100)+'</p><p>المدة: '+dur+' يوم | باقي: <b style="color:#FFD700">'+left+' يوم</b> | تنتهي: '+end.toLocaleDateString('ar-EG')+'</p><div class="progress"><i style="width:'+pct+'%"></i></div>'+(expired?'<button class="btn-gold" style="width:100%;margin-top:8px" onclick="renewPlan('+i+')">🔄 تجديد الخطة</button>':'')+'</div>';
+  }).join('');
+}
+function renewPlan(i){
+  if(!confirm('متأكد تجدد خطة '+activePlans[i].name+' لمدة '+(activePlans[i].duration||30)+' يوم؟')) return;
+  activePlans[i].startDate=new Date().toISOString();
+  activePlans[i].start=new Date().toLocaleString('ar-EG');
+  saveNew(); render(); renderMyPlansV2(); toast('تم تجديد الخطة ✅');
+}
+// Hook: when order approved, set startDate + duration
+let _origApproveOrder = window.approveOrder;
+window.approveOrder = function(i){
+  let o=orders[i]; if(!o) return;
+  // call original but it already pushes activePlan - we patch after
+  _origApproveOrder(i);
+  // Fix last activePlan added
+  let last = activePlans[activePlans.length-1];
+  if(last && !last.startDate){
+    let plan = plans.find(p=>p.name===o.name);
+    last.startDate=new Date().toISOString();
+    last.duration= plan? (plan.duration||30):30;
+    last.endDate=new Date(Date.now()+(last.duration*24*3600*1000)).toISOString();
+    saveNew(); renderMyPlansV2();
+  }
+};
+// Hook render to show account + expiry
+let _origRender2 = window.render;
+window.render = function(){ _origRender2(); renderAccount(); renderWheel(); renderMyPlansV2(); };
+// Hook adminTab for withdraws + plan duration editing
+let _origAdminTab2 = window.adminTab;
+window.adminTab = function(tab){
+  if(tab==='withdraws'){
+    let c=document.getElementById('adminContent');
+    if(!pendingWithdraws.length){ c.innerHTML='<p>لا توجد طلبات سحب معلقة. من يطلب زبون سحب، يظهر هنا، والرصيد ما ينخصم إلا بعد ما تقبله.</p>'; return; }
+    c.innerHTML='<p style="color:#FFD700">💸 طلبات سحب بانتظار التأكيد: '+pendingWithdraws.length+'</p>'+pendingWithdraws.map((w,i)=>'<div class="card" style="margin-bottom:10px"><b>'+esc(w.buyer)+'</b> - '+fmt(w.amount)+' عبر '+esc(w.method)+'<br><small>إلى: '+esc(w.account)+' | هاتف: '+esc(w.phone||'--')+' | '+esc(w.date)+'</small><p style="font-size:12px;color:#aaa">⚠️ لا تحول إلا بعد ما تتأكد من الرصيد. من تقبل، ينخصم الرصيد تلقائياً.</p><div style="display:flex;gap:6px"><button class="btn-gold" onclick="approveWithdraw('+i+')">✅ تم التحويل - تأكيد السحب</button><button class="btn-ghost" onclick="rejectWithdraw('+i+')">❌ رفض</button></div></div>').join('');
+    return;
+  }
+  let r=_origAdminTab2(tab);
+  if(tab==='plans'){
+    // Add duration inputs hint - append note (plans already have duration in data, admin can edit via new fields added below)
+    let c=document.getElementById('adminContent');
+    if(c){
+      // Inject duration editing: for each plan, add duration input after rate input - simple: add a section
+      let note=document.createElement('div');
+      note.innerHTML='<div class="card" style="margin-top:12px"><h4>⏳ مدة الخطط (بالأيام)</h4><p style="font-size:12px;color:#aaa">غير مدة كل خطة - الزبون يشوف باقي كم يوم وتنتهي.</p>'+plans.map((p,i)=>'<div class="row"><span>'+esc(p.name)+'</span><span><input id="planDur'+i+'" type="number" value="'+(p.duration||30)+'" style="width:90px;display:inline-block;margin:0"> يوم <button class="btn-gold" style="padding:6px 12px" onclick="plans['+i+'].duration=parseInt(document.getElementById(\'planDur'+i+'\').value)||30;saveAll();toast(\'تم حفظ مدة '+esc(p.name)+'\')">حفظ</button></span></div>').join('')+'</div>';
+      c.appendChild(note);
+    }
+  }
+  return r;
+};
+// Restore current user label on load
+if(currentUser){
+  let ul=document.getElementById('userLabel'); if(ul) ul.textContent=currentUser.name+' 👑';
+}
+renderAccount(); renderWheel();
+
+
+// ===== NEW: WHEEL $10 + HIDDEN ADMIN + NOTIFICATIONS + MAINTENANCE + CHART =====
+let lastBonus = localStorage.getItem('ge_last_bonus')||'';
+let wheelTotal = loadLS('ge_wheel_total',0);
+let wheelHistory = loadLS('ge_wheel_hist',[]);
+let notifs = loadLS('ge_notifs',[{t:'مرحباً بك في النسور الذهبية 👑',d:new Date().toLocaleString('ar-EG')}]);
+let maintenance = localStorage.getItem('ge_maintenance')==='1';
+function saveWheel(){saveLS('ge_wheel_total',wheelTotal); saveLS('ge_wheel_hist',wheelHistory); saveLS('ge_notifs',notifs);}
+function pushNotif(text){ notifs.unshift({t:text,d:new Date().toLocaleString('ar-EG')}); if(notifs.length>20) notifs=notifs.slice(0,20); saveWheel(); renderNotifs(); }
+function renderNotifs(){
+  let b=document.getElementById('bellBadge'); if(b) b.textContent=notifs.length;
+  let c=document.getElementById('notifList'); if(c) c.innerHTML = notifs.map(n=>'<div style="background:#1a1a1a;padding:10px;border-radius:12px;margin:6px 0"><b>'+esc(n.t)+'</b><br><small style="color:#aaa">'+esc(n.d)+'</small></div>').join('')||'<p>لا توجد إشعارات</p>';
+}
+function renderWheel(){
+  let nums=document.getElementById('wheelNumbers'); if(nums) nums.innerHTML = [1,2,3,4,5,6,7,8,9,10].map(n=>'<span style="background:#111;border:1px solid #FFD700;color:#FFD700;padding:6px 10px;border-radius:999px;font-size:13px">$'+n+'</span>').join('');
+  let wt=document.getElementById('wheelTotal'); if(wt) wt.textContent='$ '+wheelTotal;
+  let hist=document.getElementById('wheelHist'); if(hist) hist.innerHTML = wheelHistory.slice().reverse().slice(0,7).map(h=>'<div class="row"><span>'+esc(h.date)+'</span><b style="color:#FFD700">+$'+h.amt+'</b></div>').join('')||'<p>ما لعبت بعد.</p>';
+}
+// Override claimBonus to spin wheel 1-10
+window.claimBonus = function(){
+  if(lastBonus===new Date().toDateString()){toast('خذيت عجلتك اليوم already - ارجع باجر'); return;}
+  let wheel=document.getElementById('wheelEl'); if(wheel){ wheel.classList.remove('spin'); void wheel.offsetWidth; wheel.classList.add('spin'); wheel.textContent='🎡...'; }
+  let btn=document.getElementById('bonusBtn'); if(btn) btn.textContent='🎡 العجلة تدور...';
+  setTimeout(()=>{
+    let amt = Math.floor(1+Math.random()*10);
+    balance+=amt; wheelTotal+=amt; wheelHistory.push({amt:amt,date:new Date().toLocaleString('ar-EG')});
+    lastBonus=new Date().toDateString(); localStorage.setItem('ge_last_bonus',lastBonus);
+    txs.push({type:'deposit',amount:amt,label:'عجلة الحظ اليومية - $'+amt});
+    saveAll(); saveWheel(); render(); renderWheel();
+    if(wheel) wheel.textContent='$'+amt+' 🎉';
+    let m=document.getElementById('bonusMsg'); if(m) m.textContent='🎉 طلع لك رقم $'+amt+' من 10! انضاف لرصيدك. باجر رقم جديد.';
+    pushNotif('🎡 عجلة الحظ: ربحت $'+amt);
+    toast('طلع لك $'+amt+' من 10 🎉'); beep();
+    if(btn) btn.textContent='✅ خذيت عجلتك اليوم - ارجع باجر';
+  },1250);
+};
+// Add wheel history container after bonusMsg - inject on load
+setTimeout(()=>{ let m=document.getElementById('bonusMsg'); if(m && !document.getElementById('wheelHist')){ let d=document.createElement('div'); d.innerHTML='<h4 style="margin-top:12px">📜 آخر أرقامك</h4><div id="wheelHist"></div>'; m.parentNode.appendChild(d); renderWheel(); } },500);
+// Admin chart + maintenance hooks
+function renderAdminChart(){
+  let c=document.getElementById('adminChart'); if(!c) return;
+  let dep=txs.filter(t=>t.type==='deposit').reduce((s,t)=>s+t.amount,0);
+  let wd=txs.filter(t=>t.type==='withdraw').reduce((s,t)=>s+t.amount,0);
+  let prof=totalProfit||0;
+  let max=Math.max(dep,wd,prof,1);
+  c.innerHTML='<div style="margin-top:10px"><p>إيداعات: '+fmt(dep)+'</p><div class="progress"><i style="width:'+(dep/max*100)+'%"></i></div><p style="margin-top:8px">سحوبات: '+fmt(wd)+'</p><div class="progress"><i style="width:'+(wd/max*100)+'%"></i></div><p style="margin-top:8px">أرباح موزعة: '+fmt(prof)+'</p><div class="progress"><i style="width:'+(prof/max*100)+'%"></i></div><p style="margin-top:8px;font-size:12px;color:#aaa">طلبات معلقة: إيداعات '+pendingDeposits.length+' | سحوبات '+(typeof pendingWithdraws!=='undefined'?pendingWithdraws.length:0)+' | خطط مفعلة '+activePlans.length+'</p></div>';
+}
+function toggleMaintenance(){
+  maintenance=!maintenance; localStorage.setItem('ge_maintenance', maintenance?'1':'0');
+  toast(maintenance?'🛠️ تم تفعيل وضع الصيانة - الزبائن يشوفون صفحة صيانة':'✅ تم إيقاف وضع الصيانة');
+  checkMaintenance(); adminTab('settings');
+}
+function checkMaintenance(){
+  let bar=document.getElementById('maintBar');
+  if(maintenance){
+    if(!bar){ bar=document.createElement('div'); bar.id='maintBar'; bar.style.cssText='background:#f55;color:#fff;text-align:center;padding:10px;font-weight:800'; bar.textContent='🛠️ الموقع بوضع الصيانة الآن - الزبائن يشوفون صفحة صيانة (أنت الأدمن تشوف الموقع عادي)'; document.body.prepend(bar); }
+  } else if(bar) bar.remove();
+}
+// ===== HIDDEN ADMIN ACCESS - NO DOT =====
+let logoClicks=0, logoTimer=null;
+let adminDotClicks=0, adminDotTimer=null;
+function adminDotTap(){ adminDotClicks++; clearTimeout(adminDotTimer); adminDotTimer=setTimeout(()=>adminDotClicks=0,2500); if(adminDotClicks>=3){ adminDotClicks=0; secretAdminOpen(); } else { toast('👑 ' + adminDotClicks + '/3'); } }
+function secretAdminOpen(){ openModal('adminLoginModal'); toast('👑'); }
+document.addEventListener('DOMContentLoaded',()=>{
+  let logo=document.querySelector('.logo'); if(logo){ logo.style.cursor='pointer'; logo.addEventListener('click',()=>{ logoClicks++; clearTimeout(logoTimer); logoTimer=setTimeout(()=>logoClicks=0,1800); if(logoClicks>=5){ logoClicks=0; secretAdminOpen(); } }); }
+  // URL ?admin or #admin
+  if(location.search.includes('admin')||location.hash.includes('admin')){ setTimeout(secretAdminOpen,600); }
+  // Long press on footer (1.2s) - backup
+  let ft=document.querySelector('footer'); if(ft){ let t=null; ft.addEventListener('touchstart',()=>{ t=setTimeout(secretAdminOpen,1200); }); ft.addEventListener('touchend',()=>clearTimeout(t)); ft.addEventListener('mousedown',()=>{ t=setTimeout(secretAdminOpen,1200); }); ft.addEventListener('mouseup',()=>clearTimeout(t)); }
+});
+renderWheel(); renderNotifs(); checkMaintenance();
+
+
+// ===== FINAL: CHART + MAINTENANCE + PROOF WALL + LIVE CHAT + SUPABASE =====
+let proofs = loadLS('ge_proofs',[]);
+let liveChats = loadLS('ge_livechat',[{from:'support',text:'أهلاً بك في النسور الذهبية 👑 كيف أكدر أساعدك؟',d:new Date().toLocaleString('ar-EG')}]);
+let maintenance2 = localStorage.getItem('ge_maintenance')==='1';
+function saveFinal(){saveLS('ge_proofs',proofs); saveLS('ge_livechat',liveChats);}
+function renderProofs(){
+  let el=document.getElementById('proofList'); if(!el) return;
+  let approved=proofs.filter(p=>p.status==='approved');
+  if(!approved.length){ el.innerHTML='<p>لا توجد إثباتات معتمدة بعد. كن أول واحد يرفع إثبات سحبه.</p>'; return; }
+  el.innerHTML=approved.slice().reverse().map(p=>'<div class="card" style="margin-bottom:10px"><b>'+esc(p.name)+' ✅</b> - استلم <b style="color:#25D366">$'+p.amount+'</b><br><small>'+esc(p.date)+'</small>'+(p.img?'<br><img src="'+p.img+'" style="max-width:100%;border-radius:12px;border:1px solid #FFD700;margin-top:8px">':'')+'</div>').join('');
+}
+document.getElementById('proofImg')?.addEventListener('change',function(e){
+  let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=function(ev){let img=document.getElementById('proofPreview'); img.src=ev.target.result; img.style.display='block'; img.dataset.data=ev.target.result;}; r.readAsDataURL(f);
+});
+function submitProof(){
+  let n=document.getElementById('proofName').value.trim()||(currentUser?currentUser.name:'ضيف');
+  let a=parseFloat(document.getElementById('proofAmount').value);
+  if(!a||a<=0){toast('اكتب المبلغ اللي استلمته'); return;}
+  let img=document.getElementById('proofPreview'); let has=img&&img.style.display==='block';
+  proofs.push({name:n,amount:a,img:has?img.dataset.data:'',date:new Date().toLocaleString('ar-EG'),status:'pending'});
+  saveFinal(); toast('تم إرسال إثباتك للأدمن - يظهر بعد الموافقة 🧾');
+  if(typeof pushNotif==='function') pushNotif('🧾 إثبات سحب جديد بانتظار الموافقة');
+  document.getElementById('proofAmount').value=''; if(img){img.style.display='none'; img.src='';}
+}
+function approveProof(i){ proofs[i].status='approved'; saveFinal(); renderProofs(); toast('تم اعتماد الإثبات ✅'); adminTab('proofs'); }
+function rejectProof(i){ proofs.splice(i,1); saveFinal(); toast('تم رفض الإثبات'); adminTab('proofs'); }
+function renderLiveChat(){
+  let box=document.getElementById('liveChatBox'); if(!box) return;
+  box.innerHTML=liveChats.map(m=>'<div style="background:'+(m.from==='me'?'#2a2200':'#1a1a1a')+';padding:10px;border-radius:12px;margin:6px 0"><b>'+(m.from==='me'?'أنت':m.from==='support'?'الدعم 👑':esc(m.from))+':</b> '+esc(m.text)+'<br><small style="color:#888">'+esc(m.d||'')+'</small></div>').join('');
+  box.scrollTop=box.scrollHeight;
+}
+function sendLiveChat(){
+  let inp=document.getElementById('liveChatInput'); let t=inp.value.trim(); if(!t){toast('اكتب رسالتك'); return;}
+  liveChats.push({from:'me',text:t,d:new Date().toLocaleString('ar-EG')}); saveFinal(); inp.value=''; renderLiveChat();
+  // Auto reply (demo) + also push to supportMsgs for admin
+  if(typeof supportMsgs!=='undefined'){ supportMsgs.push({name:currentUser?currentUser.name:'ضيف',msg:t,reply:'',date:new Date().toLocaleString('ar-EG')}); if(typeof saveAll==='function') saveAll(); }
+  setTimeout(()=>{ liveChats.push({from:'support',text:'تم استلام رسالتك، راح نرد عليك قريباً 👑',d:new Date().toLocaleString('ar-EG')}); saveFinal(); renderLiveChat(); },900);
+  toast('تم إرسال رسالتك 💬');
+}
+function adminReplyLive(i){
+  let rep=document.getElementById('liveReply'+i).value; if(!rep){toast('اكتب الرد'); return;}
+  liveChats.push({from:'support',text:rep,d:new Date().toLocaleString('ar-EG')}); saveFinal(); renderLiveChat(); toast('تم إرسال الرد');
+}
+// Maintenance
+function toggleMaintenance2(){
+  maintenance2=!maintenance2; localStorage.setItem('ge_maintenance', maintenance2?'1':'0');
+  checkMaintenance2(); toast(maintenance2?'🛠️ تم تفعيل الصيانة':'✅ تم إيقاف الصيانة');
+  if(typeof adminTab==='function') adminTab('settings');
+}
+function checkMaintenance2(){
+  let bar=document.getElementById('maintBar2');
+  if(maintenance2){ if(!bar){ bar=document.createElement('div'); bar.id='maintBar2'; bar.style.cssText='background:#f55;color:#fff;text-align:center;padding:10px;font-weight:800'; bar.textContent='🛠️ وضع الصيانة مفعّل - أنت الأدمن تشوف الموقع عادي، الزبائن يشوفون صفحة صيانة'; document.body.prepend(bar); } }
+  else if(bar) bar.remove();
+}
+// Admin chart render
+function renderAdminChart2(){
+  let c=document.getElementById('adminChart2'); if(!c) return;
+  let dep=txs.filter(t=>t.type==='deposit').reduce((s,t)=>s+t.amount,0);
+  let wd=txs.filter(t=>t.type==='withdraw').reduce((s,t)=>s+t.amount,0);
+  let prof=totalProfit||0; let max=Math.max(dep,wd,prof,1);
+  c.innerHTML='<p>إيداعات: '+fmt(dep)+'</p><div class="progress"><i style="width:'+(dep/max*100)+'%"></i></div><p style="margin-top:8px">سحوبات: '+fmt(wd)+'</p><div class="progress"><i style="width:'+(wd/max*100)+'%"></i></div><p style="margin-top:8px">أرباح موزعة: '+fmt(prof)+'</p><div class="progress"><i style="width:'+(prof/max*100)+'%"></i></div><p style="font-size:12px;color:#aaa;margin-top:8px">إيداعات معلقة: '+(typeof pendingDeposits!=='undefined'?pendingDeposits.length:0)+' | سحوبات معلقة: '+(typeof pendingWithdraws!=='undefined'?pendingWithdraws.length:0)+' | خطط مفعلة: '+(typeof activePlans!=='undefined'?activePlans.length:0)+' | إثباتات معلقة: '+proofs.filter(p=>p.status==='pending').length+'</p>';
+}
+// Hook adminTab to add proofs + chart + maintenance in settings/overview
+let _origAdminTabFinal = window.adminTab;
+window.adminTab = function(tab){
+  if(tab==='proofs'){
+    let c=document.getElementById('adminContent');
+    let pend=proofs.filter(p=>p.status==='pending');
+    if(!pend.length && !proofs.length){ c.innerHTML='<p>لا توجد إثباتات.</p>'; return; }
+    c.innerHTML='<p>🧾 إثباتات بانتظار الموافقة: '+pend.length+'</p>'+proofs.map((p,i)=>'<div class="card" style="margin-bottom:10px"><b>'+esc(p.name)+'</b> - $'+p.amount+' - '+esc(p.status)+'<br><small>'+esc(p.date)+'</small>'+(p.img?'<br><img src="'+p.img+'" style="max-width:100%;border-radius:12px;margin-top:8px">':'')+'<div style="display:flex;gap:6px;margin-top:8px"><button class="btn-gold" onclick="approveProof('+i+')">✅ اعتماد - يظهر للكل</button><button class="btn-ghost" onclick="rejectProof('+i+')">❌ رفض</button></div></div>').join('');
+    return;
+  }
+  let r=_origAdminTabFinal(tab);
+  if(tab==='overview'){
+    let c=document.getElementById('adminContent');
+    if(c){ let d=document.createElement('div'); d.innerHTML='<div class="card" style="margin-top:12px"><h4>📊 رسم بياني</h4><div id="adminChart2"></div></div>'; c.appendChild(d); renderAdminChart2(); }
+  }
+  if(tab==='settings'){
+    let c=document.getElementById('adminContent');
+    if(c){ let d=document.createElement('div'); d.innerHTML='<div class="card" style="margin-top:12px"><h4>🛠️ وضع الصيانة</h4><p style="font-size:12px;color:#aaa">من تفعّله، الزبائن يشوفون أن الموقع تحت الصيانة.</p><button class="btn-gold" style="width:100%" onclick="toggleMaintenance2()">'+(maintenance2?'✅ إيقاف الصيانة - الموقع شغال':'🛠️ تفعيل الصيانة')+'</button><hr style="border-color:#333;margin:12px 0"><h4>☁️ Supabase</h4><p style="font-size:12px;color:#aaa">إذا ربطت Supabase من ملف supabase-config.js، البيانات تنحفظ بالسحابة وتظهر بكل الأجهزة. إذا ما ربطته، الموقع يشتغل محلي عادي.</p><p id="sbAdminStatus" style="font-size:12px;color:#FFD700"></p></div>'; c.appendChild(d); let s=document.getElementById('sbAdminStatus'); if(s) s.textContent = (window.SUPABASE_URL && window.SUPABASE_URL!=='PASTE_YOUR_SUPABASE_URL_HERE') ? '✅ Supabase مربوط: '+window.SUPABASE_URL : '📦 وضع محلي - الصق رابط ومفتاح Supabase بملف supabase-config.js'; }
+  }
+  if(tab==='support'){
+    let c=document.getElementById('adminContent');
+    if(c){ let d=document.createElement('div'); d.innerHTML='<div class="card" style="margin-top:12px"><h4>💬 شات مباشر - رد سريع</h4><textarea id="liveReply0" placeholder="اكتب ردك للشات المباشر..."></textarea><button class="btn-gold" style="width:100%" onclick="adminReplyLive(0)">إرسال رد للشات</button></div>'; c.appendChild(d); }
+  }
+  return r;
+};
+// Hook render to include proofs + live chat + maintenance
+let _origRenderFinal = window.render;
+window.render = function(){ _origRenderFinal(); renderProofs(); renderLiveChat(); checkMaintenance2(); };
+// Supabase status
+if(window.SUPABASE_URL && window.SUPABASE_URL!=='PASTE_YOUR_SUPABASE_URL_HERE'){
+  let el=document.getElementById('sbStatus'); if(el) el.textContent='☁️ Supabase مربوط - البيانات بالسحابة';
+}
+renderProofs(); renderLiveChat(); checkMaintenance2();
+
+render();calc();
+</script>
+<script>
+window.SUPABASE_URL = 'https://narqpwtdzvmaznvnbyxz.supabase.co';
+window.SUPABASE_ANON_KEY = 'sb_publishable_jbTXPgruD8VpgmloWTapbQ_XhRQ2XfW';
+window.SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_jbTXPgruD8VpgmloWTapbQ_XhRQ2XfW';
+window.SUPABASE_KEY = 'sb_publishable_jbTXPgruD8VpgmloWTapbQ_XhRQ2XfW';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="supabase-sync.js"></script>
+<script>
+try{
+  if(window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY){
+    if(!window.sb){ window.sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY); }
+    if(!window.supabaseClient){ window.supabaseClient = window.sb; }
+  }
+}catch(e){ console.log('supabase init', e); }
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+</html>
