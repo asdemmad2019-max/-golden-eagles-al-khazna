@@ -1,0 +1,33 @@
+{
+  "name": "Golden Eagles Al-Khazna",
+  "short_name": "Golden Eagles",
+  "description": "Golden Eagles Al-Khazna - منصة استثمار ذهبية، خطط استثمارية، إيداع وسحب سريع، دعم مباشر.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./index.html?v=2026-11-19-16-V8-EDGE-WIRED",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#FFD700",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
