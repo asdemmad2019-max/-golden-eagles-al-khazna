@@ -1,26 +1,52 @@
-// Golden Eagles - PWA Service Worker v15 - network-first for HTML, cache-first for assets
-const CACHE = 'golden-eagles-v15';
-const ASSETS = ['./manifest.json','./icon-192.png','./icon-512.png','./eagle.webp','./vault.webp','./favicon.png'];
+// Golden Eagles - PWA Service Worker
+const CACHE = 'golden-eagles-v2';
+const CORE = [
+  './',
+  './index.html',
+  './manifest.json',
+  './admin.html',
+  './manifest-admin.json',
+  './eagle.webp',
+  './vault.webp',
+  './favicon.png',
+  './favicon.ico',
+  './supabase-config.js',
+  './supabase-sync.js'
+];
+
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS).catch(()=>{})).then(() => self.skipWaiting()));
+  e.waitUntil(
+    caches.open(CACHE).then((c) =>
+      Promise.all(CORE.map((u) => c.add(u).catch(() => null))),
+    ).then(() => self.skipWaiting())
+  );
 });
+
 self.addEventListener('activate', (e) => {
-  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.map((k) => (k !== CACHE ? caches.delete(k) : null)))).then(() => self.clients.claim()));
+  e.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.map((k) => (k !== CACHE ? caches.delete(k) : null)))
+    ).then(() => self.clients.claim())
+  );
 });
+
+// Network-first for Supabase / API, Cache-first for static
 self.addEventListener('fetch', (e) => {
-  const url = new URL(e.request.url);
-  // Always fresh HTML - never serve stale index
-  if (url.pathname.endsWith('.html') || url.pathname.endsWith('/') || e.request.mode === 'navigate') {
-    e.respondWith(fetch(e.request).then((res) => {
-      const copy = res.clone();
-      caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(()=>{});
-      return res;
-    }).catch(() => caches.match(e.request)));
+  const url = e.request.url;
+  if (url.includes('supabase.co') || url.includes('supabase')) {
+    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
     return;
   }
-  e.respondWith(caches.match(e.request).then((hit) => hit || fetch(e.request).then((res) => {
-    const copy = res.clone();
-    caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(()=>{});
-    return res;
-  }).catch(() => hit)));
+  e.respondWith(
+    caches.match(e.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(e.request).then((res) => {
+        if (e.request.method === 'GET' && res.status === 200) {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(e.request, copy));
+        }
+        return res;
+      }).catch(() => caches.match(url.includes('admin') ? './admin.html' : './index.html'));
+    })
+  );
 });
