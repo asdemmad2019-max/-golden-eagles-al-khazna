@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest-admin.json">
+<link rel="icon" href="eagle.webp">
+<link rel="apple-touch-icon" href="eagle-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="الأدمن">
+<title>لوحة الأدمن v2 - النسور الذهبية | Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.44.4/dist/umd/supabase.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:#fff;font-family:'Cairo',system-ui,Arial,sans-serif;font-size:16px;line-height:1.7}
+header{position:sticky;top:0;z-index:50;background:rgba(0,0,0,.97);border-bottom:1px solid #FFD700;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;flex-wrap:wrap}
+header b{font-size:19px;color:#FFD700}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:14px 18px 0}
+nav button{background:#111;border:1px solid #333;color:#fff;padding:9px 14px;border-radius:999px;cursor:pointer;font-size:14px}
+nav button.active{background:#FFD700;color:#000;border-color:#FFD700;font-weight:800}
+.wrap{max-width:1100px;margin:auto;padding:16px 18px 60px}
+.card{background:#111;border:1px solid #333;border-radius:14px;padding:14px;margin-bottom:12px}
+.card b{color:#FFD700}
+input,select,textarea{width:100%;background:#1a1a1a;border:1px solid #444;color:#fff;padding:11px 12px;border-radius:10px;margin:6px 0;font-family:inherit;font-size:15px}
+textarea{min-height:70px}
+button{cursor:pointer}
+.btn-gold{background:linear-gradient(#FFE27A,#FFD700,#B8860B);color:#000;border:none;padding:11px 18px;border-radius:999px;font-weight:800;font-size:15px}
+.btn-ghost{background:#111;border:1px solid #FFD700;color:#FFD700;padding:11px 16px;border-radius:999px;font-size:15px}
+.btn-danger{background:#2a0f0f;border:1px solid #f55;color:#f88;padding:11px 16px;border-radius:999px;font-size:15px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1;min-width:120px}
+.small{font-size:12px;color:#aaa}
+.ok{color:#4caf50}.err{color:#f55}.gold{color:#FFD700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{border-bottom:1px solid #222;padding:8px;text-align:right;vertical-align:top}
+th{color:#FFD700}
+img.thumb{max-width:100%;border-radius:12px;border:1px solid #FFD700;margin-top:8px;display:block}
+#toast{position:fixed;bottom:18px;right:18px;left:18px;background:#FFD700;color:#000;padding:13px 16px;border-radius:12px;font-weight:800;display:none;z-index:999;text-align:center}
+.hidden{display:none}
+.badge{display:inline-block;background:#222;border:1px solid #444;padding:2px 10px;border-radius:999px;font-size:12px}
+.badge.p{background:#2a2a00;border-color:#FFD700;color:#FFD700}
+.badge.a{background:#0a2a0a;border-color:#4caf50;color:#4caf50}
+.badge.r{background:#2a0f0f;border-color:#f55;color:#f88}
+.badge.s{background:#0a1a2a;border-color:#4aa;color:#8ff}
+.syncbar{background:#0a1a0a;border:1px solid #2a5a2a;border-radius:10px;padding:10px 14px;margin:12px 18px 0;font-size:13px}
+.syncbar.err{background:#2a0f0f;border-color:#f55}
+</style>
+</head>
+<body>
+<header>
+  <b>🦅 لوحة الأدمن v2 — النسور الذهبية</b>
+  <span class="small" id="adminWho">غير مسجل دخول</span>
+  <span>
+    <button class="btn-gold" onclick="syncAll(true)">🔄 مزامنة الآن</button>
+    <button class="btn-ghost" onclick="location.href='index.html'">🏠 الموقع</button>
+    <button class="btn-ghost" onclick="doLogout()">🚪 خروج</button>
+  </span>
+</header>
+<div class="syncbar hidden" id="syncBar"></div>
+
+<div class="wrap" id="loginBox">
+  <div class="card" style="max-width:480px;margin:30px auto;text-align:center">
+    <h2 style="color:#FFD700">دخول الأدمن</h2>
+    <p class="small">الإيميل: <b style="color:#fff">asdemmad2019@gmail.com</b><br>الباسورد هو اللي سويته بـ Supabase &gt; Authentication، مو باسورد الجيميل.</p>
+    <input id="adminPass" type="password" placeholder="كلمة مرور الأدمن">
+    <button class="btn-gold" style="width:100%" onclick="doLogin()">دخول 🔐</button>
+    <p class="small" id="loginMsg" style="margin-top:10px"></p>
+    <p class="small" id="sbStatus">⏳ جارٍ فحص الاتصال...</p>
+  </div>
+</div>
+
+<div id="panel" class="hidden">
+  <nav id="tabs"></nav>
+  <div class="wrap"><div id="content"></div></div>
+</div>
+<div id="toast"></div>
+
+<script>
+var SUPABASE_URL='https://narqpwtdzvmaznvnbyxz.supabase.co';
+var SUPABASE_ANON_KEY='sb_publishable_jbTXPgruD8VpgmloWTapbQ_XhRQ2XfW';
+var ADMIN_EMAIL='asdemmad2019@gmail.com';
+var sb=null, session=null, currentTab='overview';
+var SYNC_DATA={}, SYNC_STATUS={}, SYNC_TIME=null;
+function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; setTimeout(function(){t.style.display='none';},4500); }
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmt(n){ return '$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function loadLS(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
+function saveLS(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+function initSb(){ if(!sb){ sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY); } return sb; }
+function statusBadge(s){ s=String(s||'pending'); if(s.indexOf('approv')===0||s==='approved') return '<span class="badge a">✅ معتمد</span>'; if(s.indexOf('reject')===0||s==='rejected') return '<span class="badge r">❌ مرفوض</span>'; return '<span class="badge p">⏳ معلق</span>'; }
+function errBox(title,err,fix){
+  return '<div class="card" style="border-color:#f55"><h4 class="err">❌ '+title+'</h4><p style="font-size:13px">الخطأ الحقيقي: <b>'+esc(err||'غير معروف')+'</b></p>'+(fix?'<p class="small">الحل: '+fix+'</p>':'')+'</div>';
+}
+function updateSyncBar(){
+  var bar=document.getElementById('syncBar'); if(!bar) return;
+  var keys=Object.keys(SYNC_STATUS);
+  if(!keys.length){ bar.classList.add('hidden'); return; }
+  bar.classList.remove('hidden');
+  var bad=keys.filter(function(k){ return !SYNC_STATUS[k].ok; });
+  bar.className='syncbar'+(bad.length?' err':'');
+  bar.innerHTML='🔄 آخر مزامنة: '+(SYNC_TIME?new Date(SYNC_TIME).toLocaleString('ar-EG'):'—')+' — '+(bad.length?('⚠️ '+bad.length+' جدول فيه مشكلة: '+bad.join(', ')):'✅ كل الجداول تتقرأ')+' <button class="btn-ghost" style="padding:4px 10px;float:left" onclick="syncAll(true)">مزامنة الآن</button>';
+}
+// ============ دالة المزامنة ============
+async function syncAll(showToast){
+  initSb();
+  var tables=['plans','plan_orders','deposits_log','money_requests','ge_users','support_messages','announcements','platform_wallet','ledger','admin_credits','proofs'];
+  for(var i=0;i<tables.length;i++){
+    var t=tables[i];
+    try{
+      var r=await sb.from(t).select('*').order('created_at',{ascending:false}).limit(200);
+      if(r.error && String(r.error.message||'').indexOf('created_at')!==-1){
+        // الجدول ماعنده عمود created_at (مثل platform_wallet) - أعد المحاولة بدون ترتيب
+        r=await sb.from(t).select('*').limit(200);
+      }
+      if(r.error){ SYNC_STATUS[t]={ok:false,error:r.error.message}; SYNC_DATA[t]=[]; }
+      else { SYNC_STATUS[t]={ok:true,count:(r.data||[]).length}; SYNC_DATA[t]=r.data||[]; }
+    }catch(e){ SYNC_STATUS[t]={ok:false,error:e.message}; SYNC_DATA[t]=[]; }
+  }
+  SYNC_TIME=Date.now();
+  updateSyncBar();
+  if(showToast){
+    var bad=Object.keys(SYNC_STATUS).filter(function(k){return !SYNC_STATUS[k].ok;});
+    if(bad.length) toast('⚠️ المزامنة خلصت — '+bad.length+' جدول فيه مشكلة. افتح تبويب الاختبار للتفاصيل.');
+    else toast('✅ المزامنة خلصت — كل الجداول تتقرأ');
+  }
+  // أعد رسم التبويب الحالي بالبيانات الجديدة
+  try{ goTab(currentTab,true); }catch(e){}
+  return SYNC_DATA;
+}
+async function doLogin(){
+  var p=(document.getElementById('adminPass').value||'').trim();
+  if(!p){ document.getElementById('loginMsg').textContent='اكتب كلمة المرور أولاً'; return; }
+  document.getElementById('loginMsg').textContent='⏳ جارٍ التحقق...';
+  try{
+    initSb();
+    var r=await sb.auth.signInWithPassword({email:ADMIN_EMAIL,password:p});
+    if(r.error){ document.getElementById('loginMsg').textContent='❌ '+r.error.message; return; }
+    session=r.data.session;
+    document.getElementById('adminPass').value='';
+    showPanel();
+  }catch(e){ document.getElementById('loginMsg').textContent='❌ '+e.message; }
+}
+async function doLogout(){ try{ if(sb) await sb.auth.signOut(); }catch(e){} session=null; location.reload(); }
+async function checkSession(){
+  try{
+    initSb();
+    var s=document.getElementById('sbStatus'); if(s) s.textContent='✅ الاتصال بالسحابة شغال';
+    var r=await sb.auth.getSession();
+    if(r.data && r.data.session && r.data.session.user && r.data.session.user.email===ADMIN_EMAIL){ session=r.data.session; showPanel(); }
+  }catch(e){}
+}
+function showPanel(){
+  document.getElementById('loginBox').classList.add('hidden');
+  document.getElementById('panel').classList.remove('hidden');
+  document.getElementById('adminWho').textContent='✅ أدمن: '+ADMIN_EMAIL;
+  renderTabs(); goTab('overview');
+  syncAll(false);
+  // تحديث تلقائي كل 30 ثانية
+  setInterval(function(){ try{ syncAll(false); }catch(e){} },30000);
+}
+var TABS=[
+  ['overview','📊 نظرة عامة'],['plans','💰 الخطط'],['planOrders','🛒 طلبات الخطط'],
+  ['deposits','💰 إيداعات'],['withdraws','💸 سحوبات'],['transfers','🔄 تحويلات'],
+  ['orders','📦 الطلبات'],['members','👥 الأعضاء'],['support','💬 الدعم'],['proofs','🧾 إثباتات'],
+  ['anns','📢 إعلانات'],['coupons','🎟️ أكواد'],['pay','💳 طرق الدفع'],
+  ['wallet','🏦 محفظة المنصة'],['ledger','📒 السجل'],['test','🧪 اختبار'],['settings','⚙️ الإعدادات']
+];
+function renderTabs(){
+  document.getElementById('tabs').innerHTML=TABS.map(function(t){
+    return '<button class="'+(t[0]===currentTab?'active':'')+'" onclick="goTab(\''+t[0]+'\')">'+t[1]+'</button>';
+  }).join('');
+}
+function goTab(t,fromSync){
+  currentTab=t; renderTabs(); document.getElementById('content').innerHTML='<p>⏳ جارٍ التحميل...</p>';
+  var fn={overview:tabOverview,plans:tabPlans,planOrders:tabPlanOrders,deposits:tabDeposits,withdraws:tabWithdraws,transfers:tabTransfers,orders:tabOrders,members:tabMembers,support:tabSupport,proofs:tabProofs,anns:tabAnns,coupons:tabCoupons,pay:tabPay,wallet:tabWallet,ledger:tabLedger,test:tabTest,settings:tabSettings}[t];
+  if(fn){ try{ var r=fn(); if(r && r.catch) r.catch(function(e){ document.getElementById('content').innerHTML=errBox('خطأ بتحميل التبويب',e.message,'حدث الصفحة Ctrl+Shift+R'); }); }catch(e){ document.getElementById('content').innerHTML=errBox('خطأ بتحميل التبويب',e.message,''); } }
+}
+function setContent(html){ document.getElementById('content').innerHTML=html; }
+
+// مرآة محلية: قرار الأدمن يتسجل بـ localStorage المشترك (نفس المتصفح)
+// حتى المنصة تشوفه فوراً بدون انتظار مزامنة Supabase
+function __geMirrorLocal(listKey, matchFn, newStatus){
+  try{
+    var list=loadLS(listKey,[]);
+    var ch=false;
+    list.forEach(function(it){ if(it && matchFn(it)){ it.status=newStatus; ch=true; } });
+    if(ch) saveLS(listKey, list);
+  }catch(e){}
+}
+
+// الكاتب الوحيد: كل قرار أدمن يمر عبر Edge (service_role يتجاوز RLS).
+// أي كتابة مباشرة من المتصفح محظورة بـ RLS وترجع "نجاح كاذب" - ممنوع استخدامها.
+async function adminWrite(payload){
+  try{
+    if(!session){ toast('سجل دخول الأدمن أولاً'); return {ok:false}; }
+    var r=await fetch(SUPABASE_URL+'/functions/v1/approve_money_request',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify(payload)});
+    var j=await r.json().catch(function(){return {};});
+    if(r.ok) return {ok:true, data:j};
+    toast('❌ '+(j.error||r.status)+' - تأكد أن دالة approve_money_request منشورة بالنسخة الجديدة');
+    return {ok:false, error:j.error};
+  }catch(e){ toast('❌ '+e.message); return {ok:false}; }
+}
+
+async function edgeApprove(requestId,approve){
+  try{
+    if(!session){ toast('سجل دخول الأدمن أولاً'); return false; }
+    var r=await fetch(SUPABASE_URL+'/functions/v1/approve_money_request',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify({request_id:requestId,approve:!!approve})});
+    var j=await r.json().catch(function(){return {};});
+    if(r.ok){ toast(approve?'تم الاعتماد بالسيرفر ✅':'تم الرفض بالسيرفر'); return true; }
+    toast('❌ Edge: '+(j.error||r.status)+' - جرب التحديث المباشر');
+    return false;
+  }catch(e){ toast('❌ Edge فشل: '+e.message); return false; }
+}
+// ---- OVERVIEW ----
+async function tabOverview(){
+  var d=SYNC_DATA;
+  var dep=(d.deposits_log||[]).length + (d.money_requests||[]).filter(function(x){return x.kind==='deposit'&&x.status==='pending';}).length;
+  var wd=(d.money_requests||[]).filter(function(x){return x.kind==='withdraw'&&x.status==='pending';}).length;
+  var tr=(d.money_requests||[]).filter(function(x){return x.kind==='transfer'&&x.status==='pending';}).length;
+  var po=(d.plan_orders||[]).filter(function(x){return x.status==='pending';}).length;
+  var wallet=loadLS('ge_platform_wallet',0);
+  var dailyProfitTotal=0;
+  try{
+    var planMap={}; (d.plans||[]).forEach(function(pl){ if(pl&&pl.name) planMap[String(pl.name)]=pl; });
+    (d.plan_orders||[]).forEach(function(o){ if(o && o.status==='approved'){ var pl2=planMap[String(o.plan_name||'')]; var rt=pl2?Number(pl2.rate||0):0; dailyProfitTotal+=Number(o.amount||0)*rt/100; } });
+  }catch(e){}
+  var localPlans=loadLS('ge_plans',[]);
+  setContent('<h2>📊 نظرة عامة</h2>'+
+    '<div class="grid">'+
+    '<div class="card"><small>الخطط (Supabase)</small><b style="font-size:24px;display:block">'+(d.plans||[]).length+'</b></div>'+
+    '<div class="card"><small>طلبات خطط معلقة</small><b style="font-size:24px;display:block">'+po+'</b></div>'+
+    '<div class="card"><small>إيداعات معلقة (الجدولين)</small><b style="font-size:24px;display:block">'+dep+'</b></div>'+
+    '<div class="card"><small>سحوبات معلقة</small><b style="font-size:24px;display:block">'+wd+'</b></div>'+
+    '<div class="card"><small>تحويلات معلقة</small><b style="font-size:24px;display:block">'+tr+'</b></div>'+
+    '<div class="card"><small>الأعضاء (Supabase)</small><b style="font-size:24px;display:block">'+(d.ge_users||[]).length+'</b></div>'+
+    '<div class="card"><small>رسائل الدعم</small><b style="font-size:24px;display:block">'+(d.support_messages||[]).length+'</b></div>'+
+    '<div class="card"><small>محفظة المنصة (محلي)</small><b style="font-size:24px;display:block">'+fmt(wallet)+'</b></div>'+
+    '<div class="card"><small>💰 إجمالي الأرباح اليومية المستحقة (خطط مفعلة)</small><b style="font-size:24px;display:block;color:#4caf50">'+fmt(dailyProfitTotal)+'</b><small>توزع تلقائياً كل يوم عند دخول الزبون - بالقوة (محلي إذا السيرفر واقف)</small></div>'+
+    '</div>'+
+    '<div class="card"><h4>⚡ إجراءات سريعة</h4><div class="row" style="margin-top:8px">'+
+    '<button class="btn-gold" onclick="goTab(\'deposits\')">إيداعات معلقة</button>'+
+    '<button class="btn-gold" onclick="goTab(\'withdraws\')">سحوبات معلقة</button>'+
+    '<button class="btn-gold" onclick="goTab(\'transfers\')">تحويلات معلقة</button>'+
+    '<button class="btn-gold" onclick="goTab(\'planOrders\')">طلبات خطط</button>'+
+    '<button class="btn-gold" onclick="syncAll(true)">🔄 مزامنة الآن</button>'+
+    '</div></div>'+
+    '<p class="small">المزامنة التلقائية كل 30 ثانية. الخطط المحلية: '+localPlans.length+' — إذا Supabase بيها أكثر، اضغط مزامنة ثم جلب من تبويب الخطط.</p>'
+  );
+}
+// ---- PLANS ----
+async function tabPlans(){
+  var localPlans=loadLS('ge_plans',[]);
+  var sbPlans=SYNC_DATA.plans||[];
+  var rows=localPlans.map(function(p,i){
+    return '<tr><td><input id="pn'+i+'" value="'+esc(p.name||'')+'"></td>'+
+    '<td><input id="pp'+i+'" type="number" value="'+(p.price||0)+'"></td>'+
+    '<td><input id="pr'+i+'" type="number" step="0.1" value="'+(p.rate||0)+'"></td>'+
+    '<td><input id="pd'+i+'" type="number" value="'+(p.duration||30)+'"></td>'+
+    '<td><input id="pdesc'+i+'" value="'+esc(p.desc||'')+'"></td>'+
+    '<td><button class="btn-gold" onclick="savePlan('+i+')">💾 حفظ</button> <button class="btn-danger" onclick="deletePlan('+i+')">🗑️ حذف</button></td></tr>';
+  }).join('');
+  setContent('<h2>💰 الخطط</h2>'+
+    '<p class="small">الخطط المحلية: <b>'+localPlans.length+'</b> | خطط Supabase: <b>'+sbPlans.length+'</b> — الحفظ يدفع لـ Supabase بالقوة.</p>'+
+    '<div class="card"><table><tr><th>الاسم</th><th>السعر $</th><th>النسبة %</th><th>المدة (يوم)</th><th>الوصف</th><th></th></tr>'+rows+'</table></div>'+
+    '<div class="card"><h4>➕ خطة جديدة</h4><div class="row">'+
+    '<input id="newPlanName" placeholder="اسم الخطة"><input id="newPlanPrice" type="number" placeholder="السعر $">'+
+    '<input id="newPlanRate" type="number" step="0.1" placeholder="النسبة %">'+
+    '<input id="newPlanDur" type="number" placeholder="المدة (يوم) - افتراضي 30"><input id="newPlanDesc" placeholder="الوصف">'+
+    '</div><button class="btn-gold" style="width:100%;margin-top:8px" onclick="addPlan()">➕ إضافة خطة - تدفع لـ Supabase فوراً</button></div>'+
+    '<div class="card"><h4>☁️ مزامنة</h4><button class="btn-ghost" onclick="pushPlans()">🔄 إعادة الدفع لـ Supabase</button> <button class="btn-ghost" onclick="pullPlans()">⬇️ جلب من Supabase (دمج فقط)</button><p class="small" id="plansStatus" style="margin-top:8px"></p></div>'
+  );
+}
+function getPlans(){ return loadLS('ge_plans',[]); }
+function setPlans(p){ saveLS('ge_plans',p); }
+async function pushPlans(){
+  var plans=getPlans();
+  try{
+    var rows=plans.map(function(p){ return {name:String(p.name||''),price:Number(p.price||0),rate:Number(p.rate||0),description:String(p.desc||''),duration:parseInt(p.duration||30)||30,updated_at:new Date().toISOString()}; });
+    if(!rows.length){ toast('ماكو خطط للدفع'); return; }
+    var r=await sb.from('plans').upsert(rows,{onConflict:'name'});
+    if(r.error){ toast('❌ الدفع فشل: '+r.error.message+' — شغّل ملف supabase-migration-fix.sql'); }
+    else { toast('☁️ الخطط تزامنت مع Supabase ✅'); await syncAll(false); }
+  }catch(e){ toast('❌ '+e.message); }
+  goTab('plans');
+}
+async function pullPlans(){
+  try{
+    var r=await sb.from('plans').select('*').order('price',{ascending:true});
+    if(r.error){ toast('❌ الجلب فشل: '+r.error.message); return; }
+    var fromSb=(r.data||[]).map(function(x){ return {name:String(x.name||''),price:Number(x.price||0),rate:Number(x.rate||0),desc:x.description||'',duration:parseInt(x.duration||30)||30}; });
+    var plans=getPlans(), by={}; plans.forEach(function(p){ if(p&&p.name) by[String(p.name).toLowerCase()]=1; });
+    var added=0; fromSb.forEach(function(p){ if(p.name && !by[String(p.name).toLowerCase()]){ plans.push(p); added++; } });
+    if(added){ setPlans(plans); toast('☁️ رجعت '+added+' خطة من Supabase'); } else toast('ماكو خطط جديدة بـ Supabase');
+    await syncAll(false);
+  }catch(e){ toast('❌ '+e.message); }
+  goTab('plans');
+}
+async function savePlan(i){
+  var plans=getPlans();
+  plans[i]={name:document.getElementById('pn'+i).value||('خطة '+(i+1)),price:parseFloat(document.getElementById('pp'+i).value)||100,rate:parseFloat(document.getElementById('pr'+i).value)||2,duration:parseInt(document.getElementById('pd'+i).value)||30,desc:document.getElementById('pdesc'+i).value||''};
+  setPlans(plans); await pushPlans();
+}
+async function addPlan(){
+  var plans=getPlans();
+  plans.push({name:document.getElementById('newPlanName').value||('خطة '+(plans.length+1)),price:parseFloat(document.getElementById('newPlanPrice').value)||100,rate:parseFloat(document.getElementById('newPlanRate').value)||2,duration:parseInt(document.getElementById('newPlanDur').value)||30,desc:document.getElementById('newPlanDesc').value||'خطة جديدة'});
+  setPlans(plans); await pushPlans();
+}
+async function deletePlan(i){
+  var plans=getPlans(); var nm=plans[i]?plans[i].name:'';
+  plans.splice(i,1); setPlans(plans);
+  if(nm){ var rD=await adminWrite({action:'delete', table:'plans', column:'name', value:nm}); if(!rD.ok) return; }
+  toast('تم حذف الخطة ✅'); await syncAll(false); goTab('plans');
+}
+// ---- PLAN ORDERS ----
+async function tabPlanOrders(){
+  var rows=(SYNC_DATA.plan_orders||[]).map(function(o){
+    return '<div class="card"><b>'+esc(o.code||'')+'</b> — '+esc(o.plan_name||'')+' — '+fmt(o.amount)+' — '+esc(o.customer_name||o.customer_email||'')+'<br><small>'+esc(o.customer_email||'')+' | '+esc(o.created_at||'')+'</small><br>'+statusBadge(o.status)+
+    '<div class="row" style="margin-top:8px"><button class="btn-gold" onclick="decidePlanOrder(\''+o.id+'\',true)">✅ قبول وتفعيل</button><button class="btn-danger" onclick="decidePlanOrder(\''+o.id+'\',false)">❌ رفض</button></div></div>';
+  }).join('') || '<p>لا توجد طلبات خطط.</p>';
+  setContent('<h2>🛒 طلبات الخطط</h2>'+rows);
+}
+async function decidePlanOrder(id,approve){
+  try{
+    var res=await adminWrite({action:'plan_order', plan_order_id:id, approve:!!approve});
+    if(!res.ok) return;
+    if(approve){
+      // الزبون يعيد بناء خطته المفعلة من plan_orders المعتمدة - ما ندفع شي لحساب الأدمن
+      try{ var ord2=await sb.from('plan_orders').select('code').eq('id',id).single(); if(ord2.data) __geMirrorLocal('ge_orders', function(it){ return it.code===ord2.data.code; }, 'approved'); }catch(e){}
+      toast('تم قبول طلب الخطة وتفعيلها ✅ - انخصم السعر من رصيد الزبون');
+    } else {
+      try{ var ord3=await sb.from('plan_orders').select('code').eq('id',id).single(); if(ord3.data) __geMirrorLocal('ge_orders', function(it){ return it.code===ord3.data.code; }, 'rejected'); }catch(e){}
+      toast('تم رفض طلب الخطة');
+    }
+    await syncAll(false); goTab('planOrders');
+  }catch(e){ toast('❌ '+e.message); }
+}
+// ---- DEPOSITS (جدولين مدموجين) ----
+async function tabDeposits(){
+  var logList=SYNC_DATA.deposits_log||[];
+  var mrList=(SYNC_DATA.money_requests||[]).filter(function(x){return x.kind==='deposit';});
+  var logErr=SYNC_STATUS.deposits_log, mrErr=SYNC_STATUS.money_requests;
+  var html='<h2>💰 طلبات الإيداع</h2><p class="small">تقرأ من الجدولين: deposits_log ('+logList.length+') + money_requests ('+mrList.length+') — الإيداع من الموقع يوصل للاثنين.</p>';
+  if(logErr && !logErr.ok) html+=errBox('deposits_log ما يتقرأ',logErr.error,'شغّل ملف supabase-migration-fix.sql الجديد (فيه إصلاح التكرار) ثم حدّث الصفحة');
+  if(mrErr && !mrErr.ok) html+=errBox('money_requests ما يتقرأ',mrErr.error,'شغّل ملف supabase-migration-fix.sql الجديد ثم حدّث الصفحة');
+  var rowsLog=logList.map(function(d){
+    return '<div class="card"><span class="badge s">deposits_log</span> <b>'+esc(d.customer_name||d.customer_email||'ضيف')+'</b> — '+fmt(d.amount)+' عبر '+esc(d.deposit_method||'')+'<br><small>'+esc(d.customer_email||'')+' | '+esc(d.created_at||'')+' | '+esc(d.code||'')+'</small><br>'+statusBadge(d.status)+
+    (d.proof_img?'<a href="'+d.proof_img+'" target="_blank"><img class="thumb" src="'+d.proof_img+'"></a><small>📸 صورة الوصل - اضغط للتكبير</small>':'<br><small class="gold">⚠️ بدون صورة وصل - يعتمد بالقوة</small>')+
+    (d.proof_img
+      ? '<div class="row" style="margin-top:8px"><button class="btn-gold" onclick="decideDeposit(\''+d.id+'\',true)">✅ تأكيد الإيداع</button><button class="btn-danger" onclick="decideDeposit(\''+d.id+'\',false)">❌ رفض</button></div>'
+      : '<div class="row" style="margin-top:8px"><button class="btn-ghost" disabled style="opacity:.5;cursor:not-allowed">⛔ بدون إثبات - لا يمكن التأكيد</button><button class="btn-danger" onclick="decideDeposit(\''+d.id+'\',false)">❌ رفض (بدون إثبات)</button></div><p class="err" style="font-size:12px">الزبون ما رفع صورة إثبات - هذا الطلب لا يُعتمد أبداً. ارفضه وخله يعيد الطلب مع صورة.</p>')+'</div>';
+  }).join('');
+  var rowsMr=mrList.map(function(m){
+    return '<div class="card"><span class="badge s">money_requests</span> <b>'+esc(m.user_id||'')+'</b> — '+fmt(m.amount)+'<br><small>'+esc(m.created_at||'')+' | ID: '+esc(m.id)+'</small><br>'+statusBadge(m.status)+
+    (m.proof_url?'<a href="'+m.proof_url+'" target="_blank"><img class="thumb" src="'+m.proof_url+'"></a><small>📸 إثبات - اضغط للتكبير</small>':'')+
+    (m.proof_url
+      ? '<div class="row" style="margin-top:8px"><button class="btn-gold" onclick="decideMoney(\''+m.id+'\',true,\'deposit\')">✅ اعتماد (Edge)</button><button class="btn-danger" onclick="decideMoney(\''+m.id+'\',false,\'deposit\')">❌ رفض (Edge)</button></div>'
+      : '<div class="row" style="margin-top:8px"><button class="btn-ghost" disabled style="opacity:.5;cursor:not-allowed">⛔ بدون إثبات - لا يمكن الاعتماد</button><button class="btn-danger" onclick="decideMoney(\''+m.id+'\',false,\'deposit\')">❌ رفض (بدون إثبات)</button></div><p class="err" style="font-size:12px">بدون صورة إثبات - لا يُعتمد.</p>')+'</div>';
+  }).join('');
+  html+=rowsLog+rowsMr || '<p>لا توجد إيداعات بأي جدول.</p>';
+  if(!rowsLog && !rowsMr) html+='<p class="small">إذا سويت إيداع وما ظهر هنا، افتح تبويب 🧪 اختبار وشوف أي جدول فيه خطأ.</p>';
+  setContent(html);
+}
+async function decideDeposit(id,approve){
+  try{
+    // حارس إثبات: لا تأكيد بدون صورة أبداً
+    if(approve){
+      var chk=await sb.from('deposits_log').select('code,proof_img').eq('id',id).single();
+      if(chk.error){ toast('❌ '+chk.error.message); return; }
+      if(!chk.data || !chk.data.proof_img){ toast('⛔ بدون صورة إثبات - لا يمكن التأكيد. ارفض الطلب.'); return; }
+    }
+    var res=await adminWrite({action:'deposit_log', deposits_log_id:id, approve:!!approve});
+    if(!res.ok) return;
+    try{ var chk2=await sb.from('deposits_log').select('code').eq('id',id).single(); if(chk2.data) __geMirrorLocal('ge_pending_dep', function(it){ return it.depCode===chk2.data.code; }, approve?'approved':'rejected'); }catch(e){}
+    toast(approve?'تم تأكيد الإيداع ✅ - انضاف الرصيد للزبون':'تم رفض الإيداع');
+    await syncAll(false); goTab('deposits');
+  }catch(e){ toast('❌ '+e.message); }
+}
+// ---- MONEY (withdraw / transfer) ----
+async function tabMoney(kind,title){
+  var mrList=(SYNC_DATA.money_requests||[]).filter(function(x){return x.kind===kind;});
+  var mrErr=SYNC_STATUS.money_requests;
+  var html='<h2>'+title+'</h2>';
+  if(mrErr && !mrErr.ok) html+=errBox('money_requests ما يتقرأ',mrErr.error,'شغّل ملف supabase-migration-fix.sql الجديد ثم حدّث الصفحة');
+  var rows=mrList.map(function(m){
+    return '<div class="card"><b>'+esc(m.user_id||'')+'</b> — '+fmt(m.amount)+' — إلى: '+esc(m.to_email||m.method||'')+'<br><small>'+esc(m.created_at||'')+' | ID: '+esc(m.id)+'</small><br>'+statusBadge(m.status)+
+    (m.proof_url?'<a href="'+m.proof_url+'" target="_blank"><img class="thumb" src="'+m.proof_url+'"></a><small>📸 إثبات - اضغط للتكبير</small>':'')+
+    (m.proof_url
+      ? '<div class="row" style="margin-top:8px"><button class="btn-gold" onclick="decideMoney(\''+m.id+'\',true,\''+kind+'\')">✅ اعتماد</button><button class="btn-danger" onclick="decideMoney(\''+m.id+'\',false,\''+kind+'\')">❌ رفض</button></div>'
+      : '<div class="row" style="margin-top:8px"><button class="btn-ghost" disabled style="opacity:.5;cursor:not-allowed">⛔ بدون إثبات - لا يمكن الاعتماد</button><button class="btn-danger" onclick="decideMoney(\''+m.id+'\',false,\''+kind+'\')">❌ رفض (بدون إثبات)</button></div><p class="err" style="font-size:12px">بدون صورة إثبات - لا يُعتمد.</p>')+'</div>';
+  }).join('') || '<p>لا توجد طلبات.</p>';
+  setContent(html+rows);
+}
+async function decideMoney(id,approve,kind){
+  // حارس إثبات: لا اعتماد بدون صورة أبداً
+  if(approve){
+    try{
+      var chkM=await sb.from('money_requests').select('proof_url').eq('id',id).single();
+      if(chkM.error){ toast('❌ '+chkM.error.message); return; }
+      if(!chkM.data || !chkM.data.proof_url){ toast('⛔ بدون صورة إثبات - لا يمكن الاعتماد. ارفض الطلب.'); return; }
+    }catch(e){ toast('❌ '+e.message); return; }
+  }
+  var res=await adminWrite({action:'money', request_id:id, approve:!!approve});
+  if(!res.ok) return; // ممنوع الـ fallback المباشر - كان يرجع نجاحاً كاذباً (RLS يحظره)
+  // مرآة محلية حتى المنصة تشوف القرار فوراً
+  (function(){ var key=kind==='withdraw'?'ge_pending_wd':(kind==='transfer'?'ge_pending_transfers':'ge_pending_dep'); __geMirrorLocal(key, function(it){ return String(it.requestId)===String(id); }, approve?'approved':'rejected'); })();
+  toast(approve?'تم الاعتماد بالسيرفر ✅ - انضاف الرصيد':'تم الرفض بالسيرفر');
+  await syncAll(false);
+  goTab(kind==='withdraw'?'withdraws':(kind==='transfer'?'transfers':'deposits'));
+}
+async function tabWithdraws(){ return tabMoney('withdraw','💸 طلبات السحب'); }
+async function tabTransfers(){ return tabMoney('transfer','🔄 طلبات التحويل'); }
+// ---- ORDERS (محلي + plan_orders) ----
+async function tabOrders(){
+  var localOrders=loadLS('ge_orders',[]);
+  var rows=localOrders.map(function(o,i){
+    return '<tr><td>'+esc(o.code||'')+'</td><td>'+esc(o.name||'')+'</td><td>'+fmt(o.amount)+'</td><td>'+esc(o.buyer||o.email||'')+'</td><td>'+esc(o.status||'')+'</td><td>'+esc(o.date||'')+'</td></tr>';
+  }).join('') || '<tr><td colspan="6">لا توجد طلبات محلية.</td></tr>';
+  setContent('<h2>📦 الطلبات (المحلية)</h2><p class="small">الطلبات المحلية من نفس المتصفح. طلبات الخطط من Supabase موجودة بتبويب 🛒 طلبات الخطط.</p><div class="card"><table><tr><th>الكود</th><th>الخطة</th><th>المبلغ</th><th>الزبون</th><th>الحالة</th><th>التاريخ</th></tr>'+rows+'</table></div>');
+}
+// ---- MEMBERS (مع عرض الخطأ الحقيقي + بديل محلي) ----
+async function tabMembers(){
+  var st=SYNC_STATUS.ge_users;
+  var list=SYNC_DATA.ge_users||[];
+  var html='<h2>👥 الأعضاء</h2>';
+  if(st && !st.ok){
+    html+=errBox('جدول ge_users ما يتقرأ من Supabase',st.error,'السبب الأشهر: ملف SQL القديم (is_admin بدون SECURITY DEFINER) يسبب "stack depth limit exceeded". شغّل ملف supabase-migration-fix.sql الجديد كاملاً بـ SQL Editor، ثم حدّث الصفحة واطلب مزامنة.');
+    // بديل محلي
+    var localM=loadLS('ge_members',[]);
+    if(localM.length){
+      html+='<div class="card"><h4>📦 بديل محلي (من نفس المتصفح)</h4><table><tr><th>الاسم</th><th>الإيميل</th><th>الهاتف</th><th>التسجيل</th></tr>'+
+      localM.map(function(u){ return '<tr><td>'+esc(u.name||'')+'</td><td>'+esc(u.email||'')+'</td><td>'+esc(u.phone||'')+'</td><td>'+esc(u.joined||'')+'</td></tr>'; }).join('')+'</table></div>';
+    } else html+='<p class="small">ماكو أعضاء محليين أيضاً.</p>';
+  } else {
+    var rows=list.map(function(u){
+      return '<tr><td>'+esc(u.name||'')+'</td><td>'+esc(u.email||'')+'</td><td>'+esc(u.phone||'')+'</td><td>'+esc(u.created_at||'')+'</td><td><button class="btn-danger" onclick="delMember(\''+esc(u.email||'')+'\')">🗑️</button></td></tr>';
+    }).join('') || '<tr><td colspan="5">لا يوجد أعضاء بـ Supabase.</td></tr>';
+    html+='<div class="card"><table><tr><th>الاسم</th><th>الإيميل</th><th>الهاتف</th><th>التسجيل</th><th></th></tr>'+rows+'</table></div>';
+  }
+  html+='<div class="card"><button class="btn-gold" onclick="syncAll(true)">🔄 مزامنة الآن</button> <button class="btn-ghost" onclick="goTab(\'test\')">🧪 اختبار الجداول</button></div>';
+  setContent(html);
+}
+async function delMember(email){
+  if(!confirm('تحذف العضو '+email+'؟')) return;
+  var r=await adminWrite({action:'delete', table:'ge_users', column:'email', value:email});
+  if(!r.ok) return;
+  toast('تم حذف العضو'); await syncAll(false); goTab('members');
+}
+// ---- SUPPORT ----
+async function tabSupport(){
+  var st=SYNC_STATUS.support_messages;
+  var html='<h2>💬 الدعم</h2>';
+  if(st && !st.ok) html+=errBox('support_messages ما يتقرأ',st.error,'شغّل ملف supabase-migration-fix.sql الجديد ثم حدّث الصفحة');
+  var rows=(SYNC_DATA.support_messages||[]).map(function(m){
+    return '<div class="card"><b>'+esc(m.name||'')+'</b> <small>'+esc(m.sender_email||'')+' | '+esc(m.created_at||'')+'</small><p>'+esc(m.msg||'')+'</p>'+
+    (m.reply?'<p class="ok">↩️ ردك: '+esc(m.reply)+'</p>':'')+
+    '<textarea id="rep'+m.id+'" placeholder="اكتب ردك...">'+esc(m.reply||'')+'</textarea>'+
+    '<div class="row"><button class="btn-gold" onclick="replySupport(\''+m.id+'\')">📩 إرسال الرد</button><button class="btn-danger" onclick="delSupport(\''+m.id+'\')">🗑️ حذف</button></div></div>';
+  }).join('') || '<p>لا توجد رسائل.</p>';
+  setContent(html+rows);
+}
+async function replySupport(id){
+  var rep=document.getElementById('rep'+id).value||'';
+  var res=await adminWrite({action:'support_reply', message_id:id, reply:rep});
+  if(!res.ok) return;
+  toast('تم إرسال الرد ✅'); await syncAll(false); goTab('support');
+}
+async function delSupport(id){
+  var r=await adminWrite({action:'delete', table:'support_messages', column:'id', value:id});
+  if(!r.ok) return;
+  toast('تم حذف الرسالة'); await syncAll(false); goTab('support');
+}
+// ---- PROOFS ----
+async function tabProofs(){
+  var st=SYNC_STATUS.proofs;
+  var html='<h2>🧾 إثباتات</h2>';
+  if(st && !st.ok) html+=errBox('proofs ما يتقرأ',st.error,'الإثباتات الأساسية تظهر مع الإيداعات والتحويلات (صورة الوصل).');
+  var rows=(SYNC_DATA.proofs||[]).map(function(p){
+    return '<div class="card"><b>'+esc(p.name||'')+'</b> — '+fmt(p.amount)+'<br><small>'+esc(p.created_at||'')+'</small><br>'+statusBadge(p.status)+
+    (p.img?'<img class="thumb" src="'+p.img+'">':'')+
+    '<div class="row" style="margin-top:8px"><button class="btn-gold" onclick="decideProof(\''+p.id+'\',true)">✅ اعتماد</button><button class="btn-danger" onclick="decideProof(\''+p.id+'\',false)">❌ رفض</button></div></div>';
+  }).join('') || '<p>لا توجد إثباتات بجدول proofs.</p>';
+  setContent(html+rows);
+}
+async function decideProof(id,approve){
+  var res=await adminWrite({action:'proof', proof_id:id, approve:!!approve});
+  if(!res.ok) return;
+  toast(approve?'تم اعتماد الإثبات ✅':'تم رفض الإثبات'); await syncAll(false); goTab('proofs');
+}
+// ---- ANNOUNCEMENTS ----
+async function tabAnns(){
+  var st=SYNC_STATUS.announcements;
+  var html='<h2>📢 الإعلانات</h2>';
+  if(st && !st.ok) html+=errBox('announcements ما يتقرأ',st.error,'شغّل ملف supabase-migration-fix.sql الجديد ثم حدّث الصفحة');
+  var rows=(SYNC_DATA.announcements||[]).map(function(a){
+    return '<div class="card"><b>'+esc(a.title||'')+'</b><p>'+esc(a.text||'')+'</p><small>نشط: '+(a.active?'نعم':'لا')+' | منبثق: '+(a.show_popup?'نعم':'لا')+'</small>'+
+    '<div class="row" style="margin-top:8px"><button class="btn-ghost" onclick="toggleAnn(\''+a.id+'\','+(!a.active)+')">🔄 تفعيل/إيقاف</button><button class="btn-danger" onclick="delAnn(\''+a.id+'\')">🗑️ حذف</button></div></div>';
+  }).join('') || '<p>لا توجد إعلانات.</p>';
+  setContent(html+'<div class="card"><h4>➕ إعلان جديد</h4><input id="annTitle" placeholder="العنوان"><textarea id="annText" placeholder="النص"></textarea><label><input type="checkbox" id="annPop" style="width:auto"> إظهار كمنبثق</label><br><button class="btn-gold" style="width:100%;margin-top:8px" onclick="addAnn()">📢 نشر الإعلان</button></div>'+rows);
+}
+async function addAnn(){
+  var r=await adminWrite({action:'announcement_add', title:document.getElementById('annTitle').value||'إعلان', text:document.getElementById('annText').value||'', show_popup:document.getElementById('annPop').checked});
+  if(!r.ok) return;
+  toast('تم نشر الإعلان ✅'); await syncAll(false); goTab('anns');
+}
+async function toggleAnn(id,v){ var r=await adminWrite({action:'announcement_toggle', id:id, active:!!v}); if(!r.ok) return; toast('تم التحديث'); await syncAll(false); goTab('anns'); }
+async function delAnn(id){ var r=await adminWrite({action:'delete', table:'announcements', column:'id', value:id}); if(!r.ok) return; toast('تم الحذف'); await syncAll(false); goTab('anns'); }
+// ---- COUPONS ----
+function tabCoupons(){
+  var coupons=loadLS('ge_coupons',[]);
+  var rows=coupons.map(function(c,i){
+    return '<tr><td>'+esc(c.code)+'</td><td>'+esc(c.off)+'%</td><td>'+(c.active?'✅':'⏸️')+'</td><td><button class="btn-ghost" onclick="toggleCoupon('+i+')">🔄</button> <button class="btn-danger" onclick="delCoupon('+i+')">🗑️</button></td></tr>';
+  }).join('') || '<tr><td colspan="4">لا توجد أكواد.</td></tr>';
+  setContent('<h2>🎟️ أكواد الخصم</h2><div class="card"><div class="row"><input id="cpCode" placeholder="الكود"><input id="cpOff" type="number" placeholder="النسبة %"></div><button class="btn-gold" style="width:100%;margin-top:8px" onclick="addCoupon()">➕ إضافة كود</button></div><div class="card"><table><tr><th>الكود</th><th>الخصم</th><th>الحالة</th><th></th></tr>'+rows+'</table></div><p class="small">الأكواد محلية (نفس المتصفح) — تظهر بالموقع فوراً.</p>');
+}
+function addCoupon(){ var c=loadLS('ge_coupons',[]); var code=(document.getElementById('cpCode').value||'').toUpperCase(); var off=parseFloat(document.getElementById('cpOff').value)||0; if(!code||!off){toast('اكتب الكود والنسبة');return;} c.push({code:code,off:off,active:true}); saveLS('ge_coupons',c); toast('تمت إضافة الكود ✅'); goTab('coupons'); }
+function toggleCoupon(i){ var c=loadLS('ge_coupons',[]); c[i].active=!c[i].active; saveLS('ge_coupons',c); goTab('coupons'); }
+function delCoupon(i){ var c=loadLS('ge_coupons',[]); c.splice(i,1); saveLS('ge_coupons',c); goTab('coupons'); }
+// ---- PAY ----
+function tabPay(){
+  var pay=loadLS('ge_pay',[]);
+  var rows=pay.map(function(p,i){
+    return '<tr><td><input id="payN'+i+'" value="'+esc(p.name||'')+'"></td><td><input id="payD'+i+'" value="'+esc(p.detail||'')+'"></td><td>'+(p.active?'✅':'⏸️')+'</td><td><button class="btn-gold" onclick="savePay('+i+')">💾</button> <button class="btn-ghost" onclick="togglePay('+i+')">🔄</button> <button class="btn-danger" onclick="delPay('+i+')">🗑️</button></td></tr>';
+  }).join('') || '<tr><td colspan="4">لا توجد طرق دفع.</td></tr>';
+  setContent('<h2>💳 طرق الدفع / السحب</h2><div class="card"><table><tr><th>الاسم</th><th>التفاصيل</th><th>الحالة</th><th></th></tr>'+rows+'</table></div><div class="card"><h4>➕ طريقة جديدة</h4><div class="row"><input id="newPayName" placeholder="الاسم (مثال: زين كاش)"><input id="newPayDetail" placeholder="التفاصيل / الرقم"></div><button class="btn-gold" style="width:100%;margin-top:8px" onclick="addPay()">➕ إضافة</button></div>');
+}
+function addPay(){ var p=loadLS('ge_pay',[]); p.push({name:document.getElementById('newPayName').value||'طريقة جديدة',detail:document.getElementById('newPayDetail').value||'',active:true}); saveLS('ge_pay',p); toast('تمت الإضافة ✅'); goTab('pay'); }
+function savePay(i){ var p=loadLS('ge_pay',[]); p[i].name=document.getElementById('payN'+i).value; p[i].detail=document.getElementById('payD'+i).value; saveLS('ge_pay',p); toast('تم الحفظ ✅'); goTab('pay'); }
+function togglePay(i){ var p=loadLS('ge_pay',[]); p[i].active=!p[i].active; saveLS('ge_pay',p); goTab('pay'); }
+function delPay(i){ var p=loadLS('ge_pay',[]); p.splice(i,1); saveLS('ge_pay',p); goTab('pay'); }
+// ---- WALLET ----
+async function tabWallet(){
+  var localW=loadLS('ge_platform_wallet',0);
+  var sbW=(SYNC_DATA.platform_wallet||[])[0]||null;
+  setContent('<h2>🏦 محفظة المنصة</h2>'+
+    '<div class="card" style="text-align:center"><small>الرصيد المحلي</small><b style="font-size:26px;display:block;color:#FFD700">'+fmt(localW)+'</b>'+
+    (sbW?'<small>Supabase: '+(sbW.balance!=null?fmt(sbW.balance):JSON.stringify(sbW))+'</small>':'<small>لا توجد محفظة بـ Supabase</small>')+'</div>'+
+    '<div class="card"><h4>➕ شحن محفظة المنصة</h4><input id="fundAmt" type="number" placeholder="المبلغ $"><button class="btn-gold" style="width:100%;margin-top:8px" onclick="fundWallet()">🏦 شحن</button></div>'+
+    '<div class="card"><h4>🎁 إضافة رصيد لزبون</h4><p class="small">هدية / تصحيح — يسحب من محفظة المنصة.</p><input id="creditEmail" placeholder="إيميل الزبون"><input id="creditAmount" type="number" placeholder="المبلغ $"><input id="creditNote" placeholder="ملاحظة"><button class="btn-gold" style="width:100%;margin-top:8px" onclick="creditCustomer()">➕ إضافة رصيد للزبون</button></div>'+
+    '<div class="card"><h4>🏆 جائزة — تسحب من المحفظة</h4><input id="prizeEmail" placeholder="إيميل الفائز"><input id="prizeAmount" type="number" placeholder="المبلغ $"><input id="prizeReason" placeholder="السبب - مثال: مسابقة رمضان / هدية"><button class="btn-gold" style="width:100%;margin-top:8px" onclick="givePrize()">🏆 إرسال الجائزة</button></div>'
+  );
+}
+async function fundWallet(){
+  var a=parseFloat(document.getElementById('fundAmt').value)||0;
+  if(!a){ toast('اكتب المبلغ'); return; }
+  var r=await adminWrite({action:'platform_wallet_adjust', delta:a});
+  if(!r.ok) return;
+  // وحّد العرض المحلي مع رصيد الجدول الحقيقي
+  try{ saveLS('ge_platform_wallet', r.data.platform_balance); }catch(e){}
+  toast('تم شحن المحفظة ✅ - رصيدها هسه '+fmt(r.data.platform_balance)); await syncAll(false); goTab('wallet');
+}
+async function creditCustomer(){
+  var email=(document.getElementById('creditEmail').value||'').trim(); var amt=parseFloat(document.getElementById('creditAmount').value)||0; var note=document.getElementById('creditNote').value||'إضافة من الأدمن';
+  if(!email||!amt){ toast('اكتب الإيميل والمبلغ'); return; }
+  var r=await adminWrite({action:'admin_credit', email:email, amount:amt, note:note});
+  if(r.ok) toast('تم شحن الرصيد للزبون ✅ - انضاف لحسابه فوراً');
+}
+async function givePrize(){
+  var email=(document.getElementById('prizeEmail').value||'').trim(); var amt=parseFloat(document.getElementById('prizeAmount').value)||0; var reason=document.getElementById('prizeReason').value||'جائزة';
+  if(!email||!amt){ toast('اكتب الإيميل والمبلغ'); return; }
+  var rP=await adminWrite({action:'admin_credit', email:email, amount:amt, note:reason+' - جائزة من المحفظة'}); if(!rP.ok) return;
+  try{ if(rP.data && rP.data.platform_balance!=null) saveLS('ge_platform_wallet', rP.data.platform_balance); }catch(e){}
+  toast('تم إرسال الجائزة ✅ - انسحب '+fmt(amt)+' من المحفظة'); await syncAll(false); goTab('wallet');
+}
+// ---- LEDGER ----
+async function tabLedger(){
+  var st=SYNC_STATUS.ledger;
+  var html='<h2>📒 السجل المالي (Ledger)</h2>';
+  if(st && !st.ok) html+=errBox('ledger ما يتقرأ',st.error,'السجل يُكتب من السيرفر فقط (Edge). إذا ما يتقرأ، شغّل ملف SQL الجديد.');
+  var rows=(SYNC_DATA.ledger||[]).slice(0,100).map(function(l){
+    return '<tr><td>'+esc(l.user_id||'')+'</td><td>'+fmt(l.amount)+'</td><td>'+esc(l.reason||l.note||'')+'</td><td>'+esc(l.created_at||'')+'</td></tr>';
+  }).join('') || '<tr><td colspan="4">لا توجد قيود.</td></tr>';
+  var total=(SYNC_DATA.ledger||[]).reduce(function(s,x){return s+Number(x.amount||0);},0);
+  setContent(html+'<div class="card"><b>مجموع القيود الظاهرة: '+fmt(total)+'</b></div><div class="card"><table><tr><th>المستخدم</th><th>المبلغ</th><th>السبب</th><th>التاريخ</th></tr>'+rows+'</table></div>');
+}
+// ---- TEST ----
+async function tabTest(){
+  setContent('<h2>🧪 اختبار</h2><p class="small">هذا الاختبار يفحص كلشي ويبين لك الخطأ الحقيقي — لا تضطر تخمّن.</p><button class="btn-gold" onclick="runTests()">▶️ تشغيل الاختبار الكامل</button><div id="testRes" style="margin-top:14px"></div>');
+  runTests();
+}
+async function runTests(){
+  var out=document.getElementById('testRes'); if(out) out.innerHTML='<p>⏳ جارٍ الاختبار...</p>';
+  var results=[];
+  // 1) Auth
+  try{
+    var s=await sb.auth.getSession();
+    results.push(['جلسة الأدمن', !!(s.data && s.data.session), s.data && s.data.session ? s.data.session.user.email : 'ماكو جلسة - سجل دخول']);
+  }catch(e){ results.push(['جلسة الأدمن',false,e.message]); }
+  // 2) Tables
+  var tables=['plans','plan_orders','deposits_log','money_requests','ge_users','support_messages','announcements','platform_wallet','ledger','admin_credits','proofs'];
+  for(var i=0;i<tables.length;i++){
+    try{
+      var r=await sb.from(tables[i]).select('*',{count:'exact',head:true});
+      results.push(['جدول '+tables[i], !r.error, r.error?r.error.message:('يتقرأ — '+(r.count!=null?r.count:'?')+' صف')]);
+    }catch(e){ results.push(['جدول '+tables[i],false,e.message]); }
+  }
+  // 3) Edge
+  try{
+    var er=await fetch(SUPABASE_URL+'/functions/v1/approve_money_request',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+(session?session.access_token:'')},body:JSON.stringify({request_id:'test',approve:false})});
+    results.push(['Edge approve_money_request', er.status!==404, 'رد السيرفر: HTTP '+er.status+' (404 = الدالة مو منشورة، غيره = الدالة موجودة)']);
+  }catch(e){ results.push(['Edge approve_money_request',false,'ماكو اتصال: '+e.message]); }
+  // 4) Local
+  results.push(['localStorage خطط', true, loadLS('ge_plans',[]).length+' خطة محلية']);
+  results.push(['localStorage أعضاء', true, loadLS('ge_members',[]).length+' عضو محلي']);
+  var html=results.map(function(r){
+    return '<div class="card" style="border-color:'+(r[1]?'#2a5a2a':'#f55')+'">'+(r[1]?'✅':'❌')+' <b>'+r[0]+'</b><br><small>'+esc(r[2])+'</small></div>';
+  }).join('');
+  var fails=results.filter(function(r){return !r[1];});
+  html='<h3>'+(fails.length?('❌ '+fails.length+' فشل — أول واحد: '+fails[0][0]):'✅ كل الاختبارات نجحت')+'</h3>'+html;
+  if(out) out.innerHTML=html;
+  if(fails.length && fails[0][0].indexOf('ge_users')!==-1) { if(out) out.innerHTML+=errBox('خطأ ge_users — الخطأ الحقيقي', fails[0][2]||'خطأ غير معروف','هذا هو نص الخطأ الفعلي من Supabase، مو رسالة ثابتة.'); }
+}
+// ---- SETTINGS ----
+async function tabSettings(){
+  var sessTxt='غير مسجل';
+  try{ var r=await sb.auth.getSession(); if(r.data && r.data.session) sessTxt='✅ مسجل: '+r.data.session.user.email; }catch(e){}
+  setContent('<h2>⚙️ الإعدادات</h2>'+
+    '<div class="card"><p>الحالة: '+sessTxt+'</p><p class="small">Supabase: '+SUPABASE_URL+'</p>'+
+    '<button class="btn-ghost" onclick="syncAll(true)">🔄 مزامنة الآن</button> <button class="btn-ghost" onclick="goTab(\'test\')">🧪 اختبار</button><p class="small" id="checkRes" style="margin-top:8px"></p></div>'+
+    '<div class="card"><h4>🔗 روابط</h4><div class="row"><button class="btn-ghost" onclick="location.href=\'index.html\'">🏠 الموقع</button><button class="btn-danger" onclick="doLogout()">🚪 خروج</button></div></div>'+
+    '<div class="card"><h4>ℹ️ ملاحظات</h4><p class="small">• هذه اللوحة منفصلة ولا تظهر بگوگل (noindex).<br>• الاعتماد/الرفض بالقوة: Edge أولاً، وإذا فشل تحديث مباشر.<br>• الخطط: الحفظ يدفع لـ Supabase فوراً.<br>• الأكواد وطرق الدفع محلية (نفس المتصفح).<br>• المزامنة التلقائية كل 30 ثانية.</p></div>'
+  );
+}
+checkSession();
+// PWA: تسجيل Service Worker حتى الأدمن يتثبت كتطبيق حقيقي (بدون شارة كروم)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>
